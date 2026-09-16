@@ -1,5 +1,5 @@
 {
   "ConnectionStrings": {
-    "Default": "Server=(localdb)\\MSSQLLocalDB;Database=CService;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "Default": "Host=localhost;Port=5432;Database=CService;Username=postgres;Password=postgres"
   }
 }

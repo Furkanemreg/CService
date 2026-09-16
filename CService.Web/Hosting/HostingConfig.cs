@@ -1,27 +1,35 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CService.Web.Data;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CService.Web.Hosting;
 
 public static class HostingConfig
 {
-    // Hem Web tek başına (Program.cs) hem de Desktop içinden (App.xaml.cs) çağırır.
     public static void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.Services
             .AddControllersWithViews()
-            // Desktop'tan host edildiğinde controller + derlenmiş view'ların bulunması garanti olsun:
             .AddApplicationPart(typeof(HostingConfig).Assembly);
 
-        // TODO (EF ileride): SQL Server / LocalDB
-        // builder.Services.AddDbContext<AppDbContext>(o =>
-        //     o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+
+        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
     }
 
     public static void ConfigurePipeline(WebApplication app)
     {
         app.UseStaticFiles();
         app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
