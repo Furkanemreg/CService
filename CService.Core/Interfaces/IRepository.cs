@@ -11,5 +11,6 @@ namespace CService.Core.Interfaces
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Remove(TEntity entity);
+        IQueryable<TEntity> Query();
     }
 }

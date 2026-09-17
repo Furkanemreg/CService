@@ -55,5 +55,6 @@ namespace CService.Core.Services
             UnitOfWork.Repository<TEntity>().Update(entity);
             await UnitOfWork.SaveChangesAsync();
         }
+        public IQueryable<TEntity> Query() => UnitOfWork.Repository<TEntity>().Query();
     }
 }

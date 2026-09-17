@@ -1,0 +1,36 @@
+﻿@model List<CService.Core.Entities.BankaHesabi>
+@{
+    ViewData["Title"] = "Banka Hesapları";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Banka Hesapları</h2>
+    <a asp-action="Create" class="btn btn-primary">Yeni Banka Hesabı</a>
+</div>
+
+<table class="table table-striped">
+    <thead><tr><th>Banka</th><th>Şube</th><th>Hesap No</th><th>IBAN</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BankaAdi</td>
+                <td>@item.SubeAdi</td>
+                <td>@item.HesapNo</td>
+                <td>@FormatIban(item.Iban)</td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@functions {
+    string FormatIban(string? iban) =>
+        string.IsNullOrWhiteSpace(iban)
+            ? iban ?? ""
+            : string.Join(" ", System.Text.RegularExpressions.Regex.Matches(iban, ".{1,4}").Select(m => m.Value));
+}

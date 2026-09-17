@@ -3,6 +3,7 @@ using System;
 using CService.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CService.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260917201007_WitholdingRate")]
+    partial class WitholdingRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,198 +142,6 @@ namespace CService.Core.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("CService.Core.Entities.BankaHesabi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Aciklama")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BankaAdi")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("HesapNo")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Iban")
-                        .HasMaxLength(26)
-                        .HasColumnType("character varying(26)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SubeAdi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BankaHesaplari");
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.Bolge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Bolgeler");
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.Firma", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Adi")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Adres")
-                        .HasColumnType("text");
-
-                    b.Property<int>("BolgeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FirmaKodu")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("GrupFirmaId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("HavaleBankaHesabiId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("KrediKartiBankaHesabiId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Mail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Not")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("OkulServisi")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Tel1")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Tel2")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Unvan")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("VatRateId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("VergiDairesi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("VergiNo")
-                        .HasMaxLength(11)
-                        .HasColumnType("character varying(11)");
-
-                    b.Property<int?>("WitholdingRateId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BolgeId");
-
-                    b.HasIndex("GrupFirmaId");
-
-                    b.HasIndex("HavaleBankaHesabiId");
-
-                    b.HasIndex("KrediKartiBankaHesabiId");
-
-                    b.HasIndex("VatRateId");
-
-                    b.HasIndex("WitholdingRateId");
-
-                    b.ToTable("Firmalar");
-                });
-
             modelBuilder.Entity("CService.Core.Entities.General.VatRate", b =>
                 {
                     b.Property<int>("Id")
@@ -409,44 +220,6 @@ namespace CService.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WitholdingRates");
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.GrupFirma", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GrupFirmalar");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -579,53 +352,6 @@ namespace CService.Core.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.Firma", b =>
-                {
-                    b.HasOne("CService.Core.Entities.Bolge", "Bolge")
-                        .WithMany()
-                        .HasForeignKey("BolgeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CService.Core.Entities.GrupFirma", "GrupFirma")
-                        .WithMany()
-                        .HasForeignKey("GrupFirmaId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CService.Core.Entities.BankaHesabi", "HavaleBankaHesabi")
-                        .WithMany()
-                        .HasForeignKey("HavaleBankaHesabiId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CService.Core.Entities.BankaHesabi", "KrediKartiBankaHesabi")
-                        .WithMany()
-                        .HasForeignKey("KrediKartiBankaHesabiId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CService.Core.Entities.General.VatRate", "VatRate")
-                        .WithMany()
-                        .HasForeignKey("VatRateId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CService.Core.Entities.General.WitholdingRate", "WitholdingRate")
-                        .WithMany()
-                        .HasForeignKey("WitholdingRateId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Bolge");
-
-                    b.Navigation("GrupFirma");
-
-                    b.Navigation("HavaleBankaHesabi");
-
-                    b.Navigation("KrediKartiBankaHesabi");
-
-                    b.Navigation("VatRate");
-
-                    b.Navigation("WitholdingRate");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

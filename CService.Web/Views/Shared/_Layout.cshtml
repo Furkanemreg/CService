@@ -1,80 +1,161 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    bool IsActive(string controller) => string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
+    bool IsInGroup(params string[] controllers) => controllers.Any(IsActive);
+
+    var tanimlarOpen = IsInGroup("Bolge", "GrupFirma", "BankaHesabi");
+    var cariOpen = IsInGroup("Firma");
+    var yonetimOpen = IsInGroup("Users", "Logs");
+    var isChangePasswordPage = IsActive("Account") && ViewContext.RouteData.Values["action"]?.ToString() == "ChangePassword";
+}
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CService</title>
+    <title>@ViewData["Title"] - CService Puantaj</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CService.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CService</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
-                        </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Kullanıcılar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Logs" asp-action="Index">Loglar</a>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity is { IsAuthenticated: true })
-                        {
-                            @if (User.Identity is { IsAuthenticated: true })
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Account" asp-action="ChangePassword">Şifremi Değiştir</a>
-                                </li>
-                                <li class="nav-item">
-                                    <span class="nav-link text-dark">@User.Identity.Name</span>
-                                </li>
-                                <li class="nav-item">
-                                    <form asp-controller="Account" asp-action="Logout" method="post">
-                                        <button type="submit" class="nav-link btn btn-link text-dark">Çıkış Yap</button>
-                                    </form>
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Giriş Yap</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+    <svg style="display:none" aria-hidden="true">
+        <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+        <symbol id="icon-map" viewBox="0 0 24 24"><path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round" /><path d="M9 4v14M15 6v14" stroke="currentColor" stroke-width="1.6" /></symbol>
+        <symbol id="icon-group" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6" fill="none" /><circle cx="17" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M14 20c0-2.2 1.8-4 5-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-bank" viewBox="0 0 24 24"><path d="M4 10 12 4l8 6M5 10v9h14v-9M9 13v4M12 13v4M15 13v4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+        <symbol id="icon-building" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></symbol>
+        <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /><path d="M15 8a3 3 0 1 1 0 6M17 20c0-2.5-1.4-4.6-3.5-5.6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-log" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round" /><path d="M9 12h6M9 16h6M9 8h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></symbol>
+        <symbol id="icon-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="3.5" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M10.5 12.5 19 4M16 7l2 2M13.3 9.7l2 2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-logout" viewBox="0 0 24 24"><path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+        <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+    </svg>
+
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-mark">CS</span>
+                <span class="brand-text">CService</span>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <nav class="sidebar-nav">
+                <a class="nav-link @(IsActive("Home") ? "active" : "")" asp-controller="Home" asp-action="Index">
+                    <svg><use href="#icon-home"></use></svg>
+                    <span>Ana Sayfa</span>
+                </a>
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <div class="nav-group">
+                        <button class="nav-section-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navTanimlar" aria-expanded="@(tanimlarOpen ? "true" : "false")">
+                            <span>Tanımlar</span>
+                            <svg class="chevron"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="collapse @(tanimlarOpen ? "show" : "")" id="navTanimlar">
+                            <a class="nav-link @(IsActive("Bolge") ? "active" : "")" asp-controller="Bolge" asp-action="Index">
+                                <svg><use href="#icon-map"></use></svg>
+                                <span>Bölgeler</span>
+                            </a>
+                            <a class="nav-link @(IsActive("GrupFirma") ? "active" : "")" asp-controller="GrupFirma" asp-action="Index">
+                                <svg><use href="#icon-group"></use></svg>
+                                <span>Grup Firmalar</span>
+                            </a>
+                            <a class="nav-link @(IsActive("BankaHesabi") ? "active" : "")" asp-controller="BankaHesabi" asp-action="Index">
+                                <svg><use href="#icon-bank"></use></svg>
+                                <span>Banka Hesapları</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="nav-group">
+                        <button class="nav-section-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navCari" aria-expanded="@(cariOpen ? "true" : "false")">
+                            <span>Cari</span>
+                            <svg class="chevron"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="collapse @(cariOpen ? "show" : "")" id="navCari">
+                            <a class="nav-link @(IsActive("Firma") ? "active" : "")" asp-controller="Firma" asp-action="Index">
+                                <svg><use href="#icon-building"></use></svg>
+                                <span>Firmalar</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="nav-group">
+                        <button class="nav-section-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navYonetim" aria-expanded="@(yonetimOpen ? "true" : "false")">
+                            <span>Yönetim</span>
+                            <svg class="chevron"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="collapse @(yonetimOpen ? "show" : "")" id="navYonetim">
+                            <a class="nav-link @(IsActive("Users") ? "active" : "")" asp-controller="Users" asp-action="Index">
+                                <svg><use href="#icon-users"></use></svg>
+                                <span>Kullanıcılar</span>
+                            </a>
+                            <a class="nav-link @(IsActive("Logs") ? "active" : "")" asp-controller="Logs" asp-action="Index">
+                                <svg><use href="#icon-log"></use></svg>
+                                <span>Loglar</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </nav>
+
+            <div class="sidebar-footer">
+                @if (User.Identity is { IsAuthenticated: true })
+                {
+                    <button class="user-chip-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#userMenu" aria-expanded="@(isChangePasswordPage ? "true" : "false")">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        <span class="user-email">@User.Identity.Name</span>
+                        <svg class="chevron"><use href="#icon-chevron"></use></svg>
+                    </button>
+                    <div class="collapse @(isChangePasswordPage ? "show" : "")" id="userMenu">
+                        <a class="nav-link @(isChangePasswordPage ? "active" : "")" asp-controller="Account" asp-action="ChangePassword">
+                            <svg><use href="#icon-key"></use></svg>
+                            <span>Şifremi Değiştir</span>
+                        </a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="nav-link btn-logout">
+                                <svg><use href="#icon-logout"></use></svg>
+                                <span>Çıkış Yap</span>
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <a class="nav-link" asp-controller="Account" asp-action="Login">
+                        <svg><use href="#icon-key"></use></svg>
+                        <span>Giriş Yap</span>
+                    </a>
+                }
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="topbar">
+                <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Menüyü aç/kapat">
+                    <span></span><span></span><span></span>
+                </button>
+                <h1 class="page-title">@ViewData["Title"]</h1>
+            </header>
+
+            <main class="content">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CService
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById('sidebarToggle')?.addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

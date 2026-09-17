@@ -1,0 +1,31 @@
+﻿@model List<CService.Core.Entities.Firma>
+@{
+    ViewData["Title"] = "Firmalar";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Firmalar</h2>
+    <a asp-action="Create" class="btn btn-primary">Yeni Firma</a>
+</div>
+
+<table class="table table-striped">
+    <thead><tr><th>Kodu</th><th>Adı</th><th>Bölge</th><th>Grup</th><th>Durum</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirmaKodu</td>
+                <td>@item.Adi</td>
+                <td>@item.Bolge?.Ad</td>
+                <td>@item.GrupFirma?.Ad</td>
+                <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

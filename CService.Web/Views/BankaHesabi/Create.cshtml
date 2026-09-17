@@ -1,0 +1,69 @@
+﻿@model CService.Core.Entities.BankaHesabi
+@{
+    ViewData["Title"] = "Yeni Banka Hesabı";
+}
+
+<h2 class="mb-4">Yeni Banka Hesabı</h2>
+<form asp-action="Create" method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    <div class="mb-3">
+        <label asp-for="BankaAdi" class="form-label">Banka Adı *</label>
+        <input asp-for="BankaAdi" class="form-control" required />
+        <span asp-validation-for="BankaAdi" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SubeAdi" class="form-label">Şube</label>
+        <input asp-for="SubeAdi" class="form-control" />
+        <span asp-validation-for="SubeAdi" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="HesapNo" class="form-label">Hesap No</label>
+        <input asp-for="HesapNo" class="form-control" />
+        <span asp-validation-for="HesapNo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Iban" class="form-label">IBAN</label>
+        <input asp-for="Iban" class="form-control" id="ibanInput" maxlength="26" style="text-transform:uppercase" />
+        <span asp-validation-for="Iban" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label">Açıklama</label>
+        <textarea asp-for="Aciklama" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>
+
+@section Scripts {
+    <script>
+        (function () {
+            const input = document.getElementById('ibanInput');
+            if (!input) return;
+
+            function enforceTr(value) {
+                const digits = value.toUpperCase().replace(/^TR/, '').replace(/[^0-9]/g, '').slice(0, 24);
+                return 'TR' + digits;
+            }
+
+            if (!input.value) {
+                input.value = 'TR';
+            } else {
+                input.value = enforceTr(input.value);
+            }
+
+            input.addEventListener('input', function (e) {
+                e.target.value = enforceTr(e.target.value);
+            });
+
+            input.addEventListener('keydown', function (e) {
+                const cursorAtOrBeforeTr = e.target.selectionStart <= 2;
+                if ((e.key === 'Backspace' || e.key === 'Delete') && cursorAtOrBeforeTr && e.target.selectionStart === e.target.selectionEnd) {
+                    e.preventDefault();
+                }
+            });
+        })();
+    </script>
+}

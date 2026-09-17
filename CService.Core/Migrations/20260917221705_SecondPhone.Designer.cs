@@ -3,6 +3,7 @@ using System;
 using CService.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CService.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260917221705_SecondPhone")]
+    partial class SecondPhone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,9 +280,6 @@ namespace CService.Core.Migrations
                     b.Property<int?>("KrediKartiBankaHesabiId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Mail")
-                        .HasColumnType("text");
-
                     b.Property<string>("Not")
                         .HasColumnType("text");
 
@@ -308,8 +308,7 @@ namespace CService.Core.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("VergiNo")
-                        .HasMaxLength(11)
-                        .HasColumnType("character varying(11)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("WitholdingRateId")
                         .HasColumnType("integer");
