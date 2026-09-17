@@ -1,4 +1,5 @@
 ﻿using CService.Core.Data;
+using CService.Core.Entities;
 using CService.Core.Factories;
 using CService.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-        services.AddIdentity<IdentityUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 

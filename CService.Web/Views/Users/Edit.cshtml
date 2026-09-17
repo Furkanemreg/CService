@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Web.Models.Users.EditUserViewModel
+@{
+    ViewData["Title"] = "Kullanıcı Düzenle";
+}
+
+<h2 class="mb-4">Kullanıcı Düzenle</h2>
+<form asp-action="Edit" method="post" class="col-md-5">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Role" class="form-label"></label>
+        <select asp-for="Role" class="form-select" asp-items="@(new SelectList((string[])ViewBag.Roles))"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>

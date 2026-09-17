@@ -1,5 +1,9 @@
 {
   "ConnectionStrings": {
     "Default": "Host=localhost;Port=5432;Database=CService;Username=postgres;Password=postgres"
+  },
+  "Seed": {
+    "AdminEmail": "admin@cservice.local",
+    "AdminPassword": "Admin123!"
   }
 }

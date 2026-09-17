@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Windows;
+using CService.Core.Data;
+using CService.Core.Data.Seeders;
 using CService.Web;
 using CService.Web.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CService.Desktop;
 
@@ -31,6 +34,12 @@ public partial class App : Application
 
         _webApp = builder.Build();
         HostingConfig.ConfigurePipeline(_webApp);
+
+        using (var scope = _webApp.Services.CreateScope())
+        {
+            await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+        }
+
         await _webApp.StartAsync();
 
         new MainWindow(BaseUrl).Show();
