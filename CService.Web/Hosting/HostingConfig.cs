@@ -1,7 +1,6 @@
-﻿using CService.Web.Data;
+﻿using CService.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CService.Web.Hosting;
@@ -14,12 +13,7 @@ public static class HostingConfig
             .AddControllersWithViews()
             .AddApplicationPart(typeof(HostingConfig).Assembly);
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
-
-        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+        builder.Services.AddCoreServices(builder.Configuration.GetConnectionString("Default")!);
     }
 
     public static void ConfigurePipeline(WebApplication app)
