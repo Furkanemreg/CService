@@ -1,4 +1,6 @@
 ﻿using CService.Core.Extensions;
+using CService.Core.Interfaces;
+using CService.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +17,9 @@ public static class HostingConfig
             .AddApplicationPart(typeof(HostingConfig).Assembly);
 
         builder.Services.AddCoreServices(builder.Configuration.GetConnectionString("Default")!);
+
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         builder.Services.AddAuthorization(options =>
         {

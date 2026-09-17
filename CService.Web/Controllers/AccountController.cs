@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CService.Core.Entities;
+using CService.Core.Interfaces;
 
 namespace CService.Web.Controllers;
 
@@ -10,11 +11,13 @@ public class AccountController : Controller
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IActivityLogger _activityLogger;
 
-    public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogger activityLogger)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _activityLogger = activityLogger;
     }
 
     [AllowAnonymous]
@@ -34,6 +37,13 @@ public class AccountController : Controller
         if (!ModelState.IsValid)
             return View(model);
 
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user is not null && user.IsDeleted)
+        {
+            ModelState.AddModelError(string.Empty, "Bu hesap silinmiş. Yöneticinizle iletişime geçin.");
+            return View(model);
+        }
+
         var result = await _signInManager.PasswordSignInAsync(
             model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
@@ -49,7 +59,6 @@ public class AccountController : Controller
         ModelState.AddModelError(string.Empty, "E-posta veya şifre hatalı.");
         return View(model);
     }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
@@ -81,6 +90,7 @@ public class AccountController : Controller
 
         // Şifre değişince security stamp yenilenir; oturumu tazelemezsek kullanıcı anında dışarı atılır.
         await _signInManager.RefreshSignInAsync(user);
+        await _activityLogger.LogAsync("Kendi Şifresini Değiştirdi", user.Id, user.Email);
 
         ViewBag.Success = true;
         return View(model);

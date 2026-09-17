@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using CService.Core.Entities;
-using CService.Core.Factories;
 using CService.Core.Interfaces;
 
 namespace CService.Core.Services
@@ -8,10 +7,12 @@ namespace CService.Core.Services
     public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEntity
     {
         protected readonly IUnitOfWork UnitOfWork;
+        protected readonly ICurrentUserService CurrentUserService;
 
-        public BaseService(IUnitOfWork unitOfWork)
+        public BaseService(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
         {
             UnitOfWork = unitOfWork;
+            CurrentUserService = currentUserService;
         }
 
         public Task<TEntity?> GetByIdAsync(int id) =>
@@ -25,6 +26,9 @@ namespace CService.Core.Services
 
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.CreatedBy = CurrentUserService.UserId;
+
             await UnitOfWork.Repository<TEntity>().AddAsync(entity);
             await UnitOfWork.SaveChangesAsync();
             return entity;
@@ -32,6 +36,9 @@ namespace CService.Core.Services
 
         public async Task UpdateAsync(TEntity entity)
         {
+            entity.UpdatedDate = DateTime.UtcNow;
+            entity.UpdatedBy = CurrentUserService.UserId;
+
             UnitOfWork.Repository<TEntity>().Update(entity);
             await UnitOfWork.SaveChangesAsync();
         }
@@ -41,7 +48,11 @@ namespace CService.Core.Services
             var entity = await UnitOfWork.Repository<TEntity>().GetByIdAsync(id);
             if (entity is null) return;
 
-            UnitOfWork.Repository<TEntity>().Remove(entity);
+            entity.IsDeleted = true;
+            entity.DeletedDate = DateTime.UtcNow;
+            entity.DeletedBy = CurrentUserService.UserId;
+
+            UnitOfWork.Repository<TEntity>().Update(entity);
             await UnitOfWork.SaveChangesAsync();
         }
     }

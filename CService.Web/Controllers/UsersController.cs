@@ -1,6 +1,8 @@
-﻿using CService.Core.Data;
+﻿using System.Security.Claims;
+using CService.Core.Data;
 using CService.Core.Data.Seeders;
 using CService.Core.Entities;
+using CService.Core.Interfaces;
 using CService.Web.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +14,15 @@ namespace CService.Web.Controllers;
 public class UsersController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IActivityLogger _activityLogger;
 
-    public UsersController(UserManager<ApplicationUser> userManager)
+    public UsersController(UserManager<ApplicationUser> userManager, IActivityLogger activityLogger)
     {
         _userManager = userManager;
+        _activityLogger = activityLogger;
     }
+
+    private string? CurrentUserId => User.FindFirstValue(ClaimTypes.NameIdentifier);
 
     public async Task<IActionResult> Index()
     {
@@ -72,6 +78,9 @@ public class UsersController : Controller
         }
 
         await _userManager.AddToRoleAsync(user, model.Role);
+
+        await _activityLogger.LogAsync("Kullanıcı Oluşturuldu", user.Id, user.Email, $"Rol: {model.Role}");
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -113,6 +122,8 @@ public class UsersController : Controller
         await _userManager.RemoveFromRolesAsync(user, currentRoles);
         await _userManager.AddToRoleAsync(user, model.Role);
 
+        await _activityLogger.LogAsync("Kullanıcı Güncellendi", user.Id, user.Email, $"Yeni Rol: {model.Role}");
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -120,11 +131,19 @@ public class UsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleLock(string id)
     {
+        if (id == CurrentUserId)
+        {
+            TempData["Error"] = "Kendi hesabınızı kısıtlayamazsınız.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var user = await _userManager.FindByIdAsync(id);
         if (user is null) return NotFound();
 
         var isLocked = await _userManager.IsLockedOutAsync(user);
         await _userManager.SetLockoutEndDateAsync(user, isLocked ? null : DateTimeOffset.MaxValue);
+
+        await _activityLogger.LogAsync(isLocked ? "Kısıtlama Kaldırıldı" : "Kullanıcı Kısıtlandı", user.Id, user.Email);
 
         return RedirectToAction(nameof(Index));
     }
@@ -133,12 +152,20 @@ public class UsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(string id)
     {
+        if (id == CurrentUserId)
+        {
+            TempData["Error"] = "Kendi hesabınızı silemezsiniz.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var user = await _userManager.FindByIdAsync(id);
         if (user is null) return NotFound();
 
         user.IsDeleted = true;
         await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
         await _userManager.UpdateAsync(user);
+
+        await _activityLogger.LogAsync("Kullanıcı Silindi", user.Id, user.Email);
 
         return RedirectToAction(nameof(Index));
     }
@@ -171,6 +198,8 @@ public class UsersController : Controller
                 ModelState.AddModelError(string.Empty, error.Description);
             return View(model);
         }
+
+        await _activityLogger.LogAsync("Şifre Sıfırlandı (Admin)", user.Id, user.Email);
 
         return RedirectToAction(nameof(Index));
     }
