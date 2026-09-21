@@ -17,17 +17,35 @@ public class AracController : Controller
     private readonly IBaseService<Arac> _service;
     private readonly IBaseService<AracSahibi> _aracSahibiService;
     private readonly IBaseService<Firma> _firmaService;
+    private readonly IBaseService<AracCinsi> _cinsiService;
+    private readonly IBaseService<AracMarka> _markaService;
+    private readonly IBaseService<AracTipi> _tipiService;
 
-    public AracController(IBaseService<Arac> service, IBaseService<AracSahibi> aracSahibiService, IBaseService<Firma> firmaService)
+    public AracController(
+        IBaseService<Arac> service,
+        IBaseService<AracSahibi> aracSahibiService,
+        IBaseService<Firma> firmaService,
+        IBaseService<AracCinsi> cinsiService,
+        IBaseService<AracMarka> markaService,
+        IBaseService<AracTipi> tipiService)
     {
         _service = service;
         _aracSahibiService = aracSahibiService;
         _firmaService = firmaService;
+        _cinsiService = cinsiService;
+        _markaService = markaService;
+        _tipiService = tipiService;
     }
 
     public async Task<IActionResult> Index()
     {
-        var items = await _service.Query().Include(a => a.AracSahibi).Include(a => a.Firma).ToListAsync();
+        var items = await _service.Query()
+            .Include(a => a.AracSahibi)
+            .Include(a => a.Firma)
+            .Include(a => a.AracCinsi)
+            .Include(a => a.AracMarka)
+            .ToListAsync();
+
         return View(items);
     }
 
@@ -82,9 +100,9 @@ public class AracController : Controller
             Plaka = model.Plaka,
             IsActive = model.IsActive,
             OdemeDurumu = model.OdemeDurumu,
-            Cinsi = model.Cinsi,
-            Marka = model.Marka,
-            Tipi = model.Tipi,
+            AracCinsiId = model.AracCinsiId,
+            AracMarkaId = model.AracMarkaId,
+            AracTipiId = model.AracTipiId,
             Modeli = model.Modeli,
             Kapasite = model.Kapasite,
             RuhsatNo = model.RuhsatNo,
@@ -136,9 +154,9 @@ public class AracController : Controller
         existing.Plaka = model.Plaka;
         existing.IsActive = model.IsActive;
         existing.OdemeDurumu = model.OdemeDurumu;
-        existing.Cinsi = model.Cinsi;
-        existing.Marka = model.Marka;
-        existing.Tipi = model.Tipi;
+        existing.AracCinsiId = model.AracCinsiId;
+        existing.AracMarkaId = model.AracMarkaId;
+        existing.AracTipiId = model.AracTipiId;
         existing.Modeli = model.Modeli;
         existing.Kapasite = model.Kapasite;
         existing.RuhsatNo = model.RuhsatNo;
@@ -169,17 +187,11 @@ public class AracController : Controller
 
     private async Task PopulateDropdownsAsync()
     {
-        ViewBag.OdemeDurumlari = Enum.GetValues<enmOdemeDurumu>()
-            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
+        ViewBag.OdemeDurumlari = Enum.GetValues<enmOdemeDurumu>().Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
 
-        ViewBag.Cinsler = Enum.GetValues<enmAracCinsi>()
-            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
-
-        ViewBag.Markalar = Enum.GetValues<enmAracMarka>()
-            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
-
-        ViewBag.Tipler = Enum.GetValues<enmAracTipi>()
-            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
+        ViewBag.Cinsler = new SelectList(await _cinsiService.GetAllAsync(), nameof(AracCinsi.Id), nameof(AracCinsi.Ad));
+        ViewBag.Markalar = new SelectList(await _markaService.GetAllAsync(), nameof(AracMarka.Id), nameof(AracMarka.Ad));
+        ViewBag.Tipler = new SelectList(await _tipiService.GetAllAsync(), nameof(AracTipi.Id), nameof(AracTipi.Ad));
 
         ViewBag.AracSahipleri = new SelectList(await _aracSahibiService.GetAllAsync(), nameof(AracSahibi.Id), nameof(AracSahibi.TamAdi));
         ViewBag.Firmalar = new SelectList(await _firmaService.GetAllAsync(), nameof(Firma.Id), nameof(Firma.Adi));

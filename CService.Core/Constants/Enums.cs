@@ -53,21 +53,3 @@ public enum enmOdemeDurumu
     [Description("Kapalı")]
     Kapali = 2
 }
-
-public enum enmAracCinsi
-{
-    [Description("Otobüs")]
-    Otobus = 1
-}
-
-public enum enmAracMarka
-{
-    [Description("Mercedes")]
-    Mercedes = 1
-}
-
-public enum enmAracTipi
-{
-    [Description("Sprinter")]
-    Sprinter = 1
-}

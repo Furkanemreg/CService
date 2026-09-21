@@ -29,7 +29,7 @@ public class Firma : BaseEntity
     public int? GrupFirmaId { get; set; }
     public GrupFirma? GrupFirma { get; set; }
 
-    public int VatRateId { get; set; }
+    public int? VatRateId { get; set; }
     public VatRate? VatRate { get; set; }
 
     public int? WitholdingRateId { get; set; }

@@ -38,6 +38,8 @@ public partial class App : Application
         using (var scope = _webApp.Services.CreateScope())
         {
             await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+            await VatRateSeeder.SeedAsync(scope.ServiceProvider);
+            await VehicleParameterSeeder.SeedAsync(scope.ServiceProvider);
         }
 
         await _webApp.StartAsync();

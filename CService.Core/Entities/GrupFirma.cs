@@ -26,7 +26,7 @@ public class GrupFirma : BaseEntity
     public int BolgeId { get; set; }
     public Bolge? Bolge { get; set; }
 
-    public int VatRateId { get; set; }
+    public int? VatRateId { get; set; }
     public VatRate? VatRate { get; set; }
 
     public int? WitholdingRateId { get; set; }

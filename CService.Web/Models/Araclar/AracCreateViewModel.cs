@@ -22,9 +22,15 @@ public class AracCreateViewModel
 
     public bool IsActive { get; set; } = true;
     public enmOdemeDurumu OdemeDurumu { get; set; }
-    public enmAracCinsi Cinsi { get; set; }
-    public enmAracMarka Marka { get; set; }
-    public enmAracTipi Tipi { get; set; }
+
+    [Required]
+    public int AracCinsiId { get; set; }
+
+    [Required]
+    public int AracMarkaId { get; set; }
+
+    [Required]
+    public int AracTipiId { get; set; }
 
     public string? Modeli { get; set; }
     public int? Kapasite { get; set; }
@@ -32,7 +38,7 @@ public class AracCreateViewModel
     public string? MotorNo { get; set; }
     public string? SasiNo { get; set; }
     public bool Klima { get; set; }
-    public DateTime? IlkGirisTarihi { get; set; }
+    public DateOnly? IlkGirisTarihi { get; set; }
 
     public string? RuhsatSahibi { get; set; }
     public string? RuhsatSahibiKimlikNo { get; set; }

@@ -3,6 +3,7 @@ using System;
 using CService.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CService.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260921212234_IlkGirisTarihiDateOnly")]
+    partial class IlkGirisTarihiDateOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,16 +150,10 @@ namespace CService.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AracCinsiId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AracMarkaId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("AracSahibiId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("AracTipiId")
+                    b.Property<int>("Cinsi")
                         .HasColumnType("integer");
 
                     b.Property<string>("CreatedBy")
@@ -198,6 +195,9 @@ namespace CService.Core.Migrations
                     b.Property<bool>("Klima")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("Marka")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Modeli")
                         .HasColumnType("text");
 
@@ -232,6 +232,9 @@ namespace CService.Core.Migrations
                     b.Property<string>("SoforTelefon")
                         .HasColumnType("text");
 
+                    b.Property<int>("Tipi")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
@@ -240,99 +243,11 @@ namespace CService.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AracCinsiId");
-
-                    b.HasIndex("AracMarkaId");
-
                     b.HasIndex("AracSahibiId");
-
-                    b.HasIndex("AracTipiId");
 
                     b.HasIndex("FirmaId");
 
                     b.ToTable("Araclar");
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.AracCinsi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Kod")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AracCinsleri");
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.AracMarka", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Kod")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AracMarkalari");
                 });
 
             modelBuilder.Entity("CService.Core.Entities.AracSahibi", b =>
@@ -441,47 +356,6 @@ namespace CService.Core.Migrations
                     b.HasIndex("OdemeGrubuId");
 
                     b.ToTable("AracSahipleri");
-                });
-
-            modelBuilder.Entity("CService.Core.Entities.AracTipi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Kod")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AracTipleri");
                 });
 
             modelBuilder.Entity("CService.Core.Entities.BankaHesabi", b =>
@@ -1040,27 +914,9 @@ namespace CService.Core.Migrations
 
             modelBuilder.Entity("CService.Core.Entities.Arac", b =>
                 {
-                    b.HasOne("CService.Core.Entities.AracCinsi", "AracCinsi")
-                        .WithMany()
-                        .HasForeignKey("AracCinsiId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CService.Core.Entities.AracMarka", "AracMarka")
-                        .WithMany()
-                        .HasForeignKey("AracMarkaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CService.Core.Entities.AracSahibi", "AracSahibi")
                         .WithMany()
                         .HasForeignKey("AracSahibiId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CService.Core.Entities.AracTipi", "AracTipi")
-                        .WithMany()
-                        .HasForeignKey("AracTipiId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1070,13 +926,7 @@ namespace CService.Core.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AracCinsi");
-
-                    b.Navigation("AracMarka");
-
                     b.Navigation("AracSahibi");
-
-                    b.Navigation("AracTipi");
 
                     b.Navigation("Firma");
                 });

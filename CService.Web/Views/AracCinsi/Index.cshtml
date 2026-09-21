@@ -1,21 +1,18 @@
-﻿@model List<CService.Core.Entities.AracSahibi>
+﻿@model List<CService.Core.Entities.AracCinsi>
 @{
-    ViewData["Title"] = "Araç Sahipleri";
+    ViewData["Title"] = "Araç Cinsleri";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Araç Sahipleri</h2>
-    <a asp-action="Create" class="btn btn-primary">Yeni Araç Sahibi</a>
+    <h2>Araç Cinsleri</h2>
+    <a asp-action="Create" class="btn btn-primary">Yeni Araç Cinsi</a>
 </div>
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Kod</th>
-            <th>Ad Soyad</th>
-            <th>TC Kimlik No</th>
-            <th>Tel</th>
-            <th>Durum</th>
+            <th>Araç Cinsi</th>
             <th></th>
         </tr>
     </thead>
@@ -23,11 +20,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Kod</td>
-                <td>@item.TamAdi</td>
-                <td>@item.TcKimlikNo</td>
-                <td>@item.Tel</td>
-                <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
+                <td>@(item.Kod ?? "-")</td>
+                <td>@item.Ad</td>
                 <td class="text-end">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>
                     <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">

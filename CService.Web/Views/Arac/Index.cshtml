@@ -30,9 +30,9 @@
                 <td>@item.Plaka</td>
                 <td>@item.Firma?.Adi</td>
                 <td>@item.AracSahibi?.TamAdi</td>
-                <td>@EnumHelper.GetEnumDescription(item.Cinsi)</td>
-                <td>@EnumHelper.GetEnumDescription(item.Marka)</td>
-                <td>@item.Kapasite</td>
+                <td>@item.AracCinsi?.Ad</td>
+                <td>@item.AracMarka?.Ad</td>
+                <td>@(item.Kapasite.HasValue ? item.Kapasite.Value : "-")</td>
                 <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
                 <td class="text-end">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>

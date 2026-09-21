@@ -1,0 +1,22 @@
+﻿@model CService.Core.Entities.AracTipi
+@{
+    ViewData["Title"] = "Yeni Araç Tipi";
+}
+
+<h2 class="mb-4">Yeni Araç Tipi</h2>
+<form asp-action="Create" method="post" class="col-md-5">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label">Araç Tipi *</label>
+        <input asp-for="Ad" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Kod" class="form-label">Kod</label>
+        <input asp-for="Kod" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>

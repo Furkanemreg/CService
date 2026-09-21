@@ -19,7 +19,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AracSahibi> AracSahipleri => Set<AracSahibi>();
     public DbSet<Arac> Araclar => Set<Arac>();
     public DbSet<OdemeGrubu> OdemeGruplari => Set<OdemeGrubu>();
-
+    public DbSet<AracCinsi> AracCinsleri => Set<AracCinsi>();
+    public DbSet<AracMarka> AracMarkalari => Set<AracMarka>();
+    public DbSet<AracTipi> AracTipleri => Set<AracTipi>();
     #region GENERAL ENTITIES
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
     public DbSet<VatRate> VatRates => Set<VatRate>();
@@ -126,6 +128,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany()
             .HasForeignKey(a => a.AracSahibiId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Arac>().HasOne(a => a.AracCinsi).WithMany().HasForeignKey(a => a.AracCinsiId).OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Arac>().HasOne(a => a.AracMarka).WithMany().HasForeignKey(a => a.AracMarkaId).OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Arac>().HasOne(a => a.AracTipi).WithMany().HasForeignKey(a => a.AracTipiId).OnDelete(DeleteBehavior.Restrict);
         #endregion
 
         foreach (var entityType in builder.Model.GetEntityTypes())

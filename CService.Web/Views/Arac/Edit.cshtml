@@ -43,15 +43,21 @@
     <div class="row">
         <div class="col-md-4 mb-3">
             <label class="form-label">Cinsi</label>
-            <select asp-for="Cinsi" class="form-select" asp-items="@(ViewBag.Cinsler as List<SelectListItem>)"></select>
-        </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Markası</label>
-            <select asp-for="Marka" class="form-select" asp-items="@(ViewBag.Markalar as List<SelectListItem>)"></select>
+            <select asp-for="AracCinsiId" class="form-select" asp-items="@(ViewBag.Cinsler as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Tipi</label>
-            <select asp-for="Tipi" class="form-select" asp-items="@(ViewBag.Tipler as List<SelectListItem>)"></select>
+            <select asp-for="AracTipiId" class="form-select" asp-items="@(ViewBag.Tipler as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Markası</label>
+            <select asp-for="AracMarkaId" class="form-select" asp-items="@(ViewBag.Markalar as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
         </div>
     </div>
 
@@ -97,7 +103,7 @@
             <input asp-for="RuhsatSahibi" class="form-control" />
         </div>
         <div class="col-md-6 mb-3">
-            <label asp-for="RuhsatSahibiKimlikNo" class="form-label">R.S. Kimlik No</label>
+            <label asp-for="RuhsatSahibiKimlikNo" class="form-label">Ruhsat Sahibi Kimlik No</label>
             <input asp-for="RuhsatSahibiKimlikNo" class="form-control" maxlength="11" />
         </div>
     </div>
