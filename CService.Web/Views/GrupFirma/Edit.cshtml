@@ -1,17 +1,165 @@
-﻿@model CService.Core.Entities.GrupFirma
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Core.Entities.GrupFirma
 @{
     ViewData["Title"] = "Grup Firma Düzenle";
 }
 
-<h2 class="mb-4">Grup Firma Düzenle</h2>
+<h2 class="mb-4">Yeni Grup Firma</h2>
 <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="col-md-5">
     <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="mb-3">
-        <label asp-for="Ad" class="form-label">Ad *</label>
-        <input asp-for="Ad" class="form-control" required />
-        <span asp-validation-for="Ad" class="text-danger"></span>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Adi" class="form-label">Firma Adı *</label>
+            <input asp-for="Adi" class="form-control" required />
+            <span asp-validation-for="Adi" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="FirmaKodu" class="form-label">Firma Kodu *</label>
+            <input asp-for="FirmaKodu" class="form-control" />
+            <span asp-validation-for="FirmaKodu" class="text-danger"></span>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="VergiNo" class="form-label">VKN / TCKN</label>
+            <input asp-for="VergiNo" class="form-control" maxlength="11" />
+            <span asp-validation-for="VergiNo" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="VergiDairesi" class="form-label">Vergi Dairesi</label>
+            <input asp-for="VergiDairesi" class="form-control" />
+            <span asp-validation-for="VergiDairesi" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Mail" class="form-label">E-Posta Adresi</label>
+            <input asp-for="Mail" class="form-control" />
+            <span asp-validation-for="Mail" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Tel1" class="form-label">Telefon Numarası</label>
+            <input asp-for="Tel1" class="form-control" />
+            <span asp-validation-for="Tel1" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Tel2" class="form-label">Telefon Numarası 2</label>
+            <input asp-for="Tel2" class="form-control" />
+            <span asp-validation-for="Tel2" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Bölge</label>
+            <select asp-for="BolgeId" class="form-select" asp-items="@(ViewBag.Bolgeler as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="BolgeId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Havale Banka Hesabı</label>
+            <select asp-for="HavaleBankaHesabiId" class="form-select" asp-items="@(ViewBag.BankaHesaplari as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="HavaleBankaHesabiId" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Kredi Kartı Banka Hesabı</label>
+            <select asp-for="KrediKartiBankaHesabiId" class="form-select" asp-items="@(ViewBag.BankaHesaplari as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="KrediKartiBankaHesabiId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">KDV Oranı</label>
+            <select asp-for="VatRateId" class="form-select" asp-items="@(ViewBag.VatRates as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="VatRateId" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Tevkifat Oranı</label>
+            <select asp-for="WitholdingRateId" class="form-select" asp-items="@(ViewBag.TevkifatRates as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="WitholdingRateId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-check form-switch toggle-switch mb-3">
+        <input asp-for="OkulServisi" class="form-check-input" role="switch" />
+        <label asp-for="OkulServisi" class="form-check-label">Okul Servisi</label>
+        <span asp-validation-for="OkulServisi" class="text-danger"></span>
+    </div>
+
+    <div class="row" id="okulOdemeTipiRow">
+        <div class="col-md-6 mb-3">
+            <label asp-for="OkulOdemeTpi" class="form-label">Okul Ödeme Tipi</label>
+            <select asp-for="OkulOdemeTpi" class="form-select" asp-items="@(ViewBag.OkulOdemeTipleri as List<SelectListItem>)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="OkulOdemeTpi" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Unvan" class="form-label"></label>
+        <textarea asp-for="Unvan" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Unvan" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Adres" class="form-label"></label>
+        <textarea asp-for="Adres" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Adres" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Not" class="form-label"></label>
+        <textarea asp-for="Not" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Not" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Durum</label>
+            <select asp-for="IsActive" class="form-select">
+                <option value="true">Aktif</option>
+                <option value="false">Pasif</option>
+            </select>
+            <span asp-validation-for="IsActive" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
     <a asp-action="Index" class="btn btn-link">Vazgeç</a>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            const checkbox = document.getElementById('OkulServisi');
+            const row = document.getElementById('okulOdemeTipiRow');
+            if (!checkbox || !row) return;
+
+            function syncVisibility() {
+                row.style.display = checkbox.checked ? '' : 'none';
+            }
+
+            checkbox.addEventListener('change', syncVisibility);
+            syncVisibility();
+        })();
+    </script>
+}

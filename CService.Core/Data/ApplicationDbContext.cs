@@ -16,7 +16,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<GrupFirma> GrupFirmalar => Set<GrupFirma>();
     public DbSet<BankaHesabi> BankaHesaplari => Set<BankaHesabi>();
     public DbSet<Firma> Firmalar => Set<Firma>();
-
+    public DbSet<AracSahibi> AracSahipleri => Set<AracSahibi>();
+    public DbSet<Arac> Araclar => Set<Arac>();
+    public DbSet<OdemeGrubu> OdemeGruplari => Set<OdemeGrubu>();
 
     #region GENERAL ENTITIES
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
@@ -28,6 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
+        #region Firma
         builder.Entity<Firma>()
             .HasOne(f => f.Bolge)
             .WithMany()
@@ -63,6 +66,67 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany()
             .HasForeignKey(f => f.KrediKartiBankaHesabiId)
             .OnDelete(DeleteBehavior.Restrict);
+        #endregion
+
+        #region GrupFirma
+
+        builder.Entity<GrupFirma>()
+            .HasOne(g => g.Bolge)
+            .WithMany()
+            .HasForeignKey(g => g.BolgeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<GrupFirma>()
+            .HasOne(g => g.VatRate)
+            .WithMany()
+            .HasForeignKey(g => g.VatRateId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<GrupFirma>()
+            .HasOne(g => g.WitholdingRate)
+            .WithMany()
+            .HasForeignKey(g => g.WitholdingRateId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<GrupFirma>()
+            .HasOne(g => g.HavaleBankaHesabi)
+            .WithMany()
+            .HasForeignKey(g => g.HavaleBankaHesabiId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<GrupFirma>()
+            .HasOne(g => g.KrediKartiBankaHesabi)
+            .WithMany()
+            .HasForeignKey(g => g.KrediKartiBankaHesabiId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        #endregion
+
+        #region ARAÇ / ARAÇ SAHİBİ
+        builder.Entity<AracSahibi>()
+            .HasOne(a => a.BankaHesabi)
+            .WithMany()
+            .HasForeignKey(a => a.BankaHesabiId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<AracSahibi>()
+            .HasOne(a => a.OdemeGrubu)
+            .WithMany()
+            .HasForeignKey(a => a.OdemeGrubuId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Arac>()
+            .HasOne(a => a.Firma)
+            .WithMany()
+            .HasForeignKey(a => a.FirmaId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Arac>()
+            .HasOne(a => a.AracSahibi)
+            .WithMany()
+            .HasForeignKey(a => a.AracSahibiId)
+            .OnDelete(DeleteBehavior.Restrict);
+        #endregion
 
         foreach (var entityType in builder.Model.GetEntityTypes())
         {

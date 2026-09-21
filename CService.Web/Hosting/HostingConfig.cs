@@ -31,6 +31,8 @@ public static class HostingConfig
 
     public static void ConfigurePipeline(WebApplication app)
     {
+        app.UseMiddleware<CService.Core.Middlewares.ExceptionHandlingMiddleware>();
+
         app.UseStaticFiles();
         app.UseRouting();
 

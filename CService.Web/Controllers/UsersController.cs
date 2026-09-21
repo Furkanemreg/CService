@@ -7,6 +7,7 @@ using CService.Web.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CService.Web.Controllers;
 
@@ -45,7 +46,17 @@ public class UsersController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        ViewBag.Roles = IdentitySeeder.Roles;
+        ViewBag.Roles = new SelectList(
+            new[]
+            {
+                new { Value = "Admin", Text = "Yönetici" },
+                new { Value = "Manager", Text = "Müdür" },
+                new { Value = "User", Text = "Kullanıcı" }
+            },
+            "Value",
+            "Text"
+        );
+
         return View(new CreateUserViewModel());
     }
 
@@ -55,7 +66,16 @@ public class UsersController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewBag.Roles = IdentitySeeder.Roles;
+            ViewBag.Roles = new SelectList(
+                new[]
+                {
+                    new { Value = "Admin", Text = "Yönetici" },
+                    new { Value = "Manager", Text = "Müdür" },
+                    new { Value = "User", Text = "Kullanıcı" }
+                },
+                "Value",
+                "Text"
+            );
             return View(model);
         }
 
@@ -72,8 +92,17 @@ public class UsersController : Controller
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
-
-            ViewBag.Roles = IdentitySeeder.Roles;
+            
+            ViewBag.Roles = new SelectList(
+                new[]
+                {
+                    new { Value = "Admin", Text = "Yönetici" },
+                    new { Value = "Manager", Text = "Müdür" },
+                    new { Value = "User", Text = "Kullanıcı" }
+                },
+                "Value",
+                "Text"
+            );
             return View(model);
         }
 
@@ -91,7 +120,17 @@ public class UsersController : Controller
         if (user is null) return NotFound();
 
         var roles = await _userManager.GetRolesAsync(user);
-        ViewBag.Roles = IdentitySeeder.Roles;
+
+        ViewBag.Roles = new SelectList(
+            new[]
+            {
+                    new { Value = "Admin", Text = "Yönetici" },
+                    new { Value = "Manager", Text = "Müdür" },
+                    new { Value = "User", Text = "Kullanıcı" }
+            },
+            "Value",
+            "Text"
+        );
 
         return View(new EditUserViewModel
         {
@@ -110,7 +149,16 @@ public class UsersController : Controller
 
         if (!ModelState.IsValid)
         {
-            ViewBag.Roles = IdentitySeeder.Roles;
+            ViewBag.Roles = new SelectList(
+                new[]
+                {
+                    new { Value = "Admin", Text = "Yönetici" },
+                    new { Value = "Manager", Text = "Müdür" },
+                    new { Value = "User", Text = "Kullanıcı" }
+                },
+                "Value",
+                "Text"
+            );
             return View(model);
         }
 

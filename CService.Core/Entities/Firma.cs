@@ -1,12 +1,16 @@
 ﻿using CService.Core.Entities.General;
 using System.ComponentModel.DataAnnotations;
+using CService.Core.Constants.Enums;
 
 namespace CService.Core.Entities;
 
 public class Firma : BaseEntity
 {
-    public string FirmaKodu { get; set; } = string.Empty;
+    [Required]
     public string Adi { get; set; } = string.Empty;
+
+    [Required]
+    public string FirmaKodu { get; set; } = string.Empty;
 
     [StringLength(11, MinimumLength = 10, ErrorMessage = "VKN/TCKN 10 veya 11 haneli olmalıdır.")]
     public string? VergiNo { get; set; }
@@ -32,6 +36,7 @@ public class Firma : BaseEntity
     public WitholdingRate? WitholdingRate { get; set; }
 
     public bool OkulServisi { get; set; }
+    public enmOkulOdemeTpi? OkulOdemeTpi { get; set; }
 
     public int? HavaleBankaHesabiId { get; set; }
     public BankaHesabi? HavaleBankaHesabi { get; set; }

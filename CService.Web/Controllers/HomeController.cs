@@ -1,4 +1,5 @@
 using CService.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -23,10 +24,35 @@ namespace CService.Web.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            var exception = HttpContext.Items["UnhandledException"] as Exception;
+
+            var model = new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ExceptionMessage = exception?.Message,
+                StackTrace = exception?.ToString(),
+                Path = HttpContext.Items["ErrorRequestPath"] as string
+            };
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error404()
+        {
+            var model = new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Path = HttpContext.Items["ErrorRequestPath"] as string ?? Request.Path
+            };
+
+            return View(model);
         }
     }
 }

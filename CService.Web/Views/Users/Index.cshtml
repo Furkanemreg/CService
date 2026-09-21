@@ -17,10 +17,15 @@
 
 <table class="table table-striped">
     <thead>
-        <tr><th>E-posta</th><th>Rol</th><th>Durum</th><th></th></tr>
+        <tr>
+            <th>E-Posta Adresi</th>
+            <th>Kullanıcı Rolü</th>
+            <th>Durum</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
+        @foreach (var user in Model.OrderByDescending(x => x.Id == currentUserId))
         {
             var isSelf = user.Id == currentUserId;
             <tr>
@@ -30,7 +35,22 @@
                         <span class="badge bg-secondary">Siz</span>
                     }
                 </td>
-                <td>@string.Join(", ", user.Roles)</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        var roleName = role switch
+                        {
+                            "Admin" => "Yönetici",
+                            "Manager" => "Müdür",
+                            "User" => "Kullanıcı",
+                            _ => role
+                        };
+
+                        <span class="badge bg-light text-dark border me-1">
+                            @roleName
+                        </span>
+                    }
+                </td>
                 <td>@(user.IsLocked ? "Kısıtlı" : "Aktif")</td>
                 <td class="text-end">
                     <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>

@@ -1,0 +1,141 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Core.Entities.AracSahibi
+@{
+    ViewData["Title"] = "Yeni Araç Sahibi";
+}
+
+<h2 class="mb-4">Yeni Araç Sahibi</h2>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <label asp-for="Kod" class="form-label">Kod *</label>
+            <input asp-for="Kod" class="form-control" required />
+            <span asp-validation-for="Kod" class="text-danger"></span>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="Adi" class="form-label">Adı *</label>
+            <input asp-for="Adi" class="form-control" required />
+            <span asp-validation-for="Adi" class="text-danger"></span>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="Soyad" class="form-label">Soyad *</label>
+            <input asp-for="Soyad" class="form-control" required />
+            <span asp-validation-for="Soyad" class="text-danger"></span>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="TcKimlikNo" class="form-label">TC Kimlik No</label>
+            <input asp-for="TcKimlikNo" class="form-control" maxlength="11" />
+            <span asp-validation-for="TcKimlikNo" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Tel" class="form-label"></label>
+            <input asp-for="Tel" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="VergiDairesi" class="form-label">Vergi Dairesi</label>
+            <input asp-for="VergiDairesi" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="VergiNo" class="form-label">Vergi No</label>
+            <input asp-for="VergiNo" class="form-control" maxlength="11" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Adres" class="form-label"></label>
+        <textarea asp-for="Adres" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Vekil" class="form-label"></label>
+            <input asp-for="Vekil" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="VekilTel" class="form-label">Vekil Tel</label>
+            <input asp-for="VekilTel" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Sorumlu" class="form-label"></label>
+            <input asp-for="Sorumlu" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Ödeme Tipi</label>
+            <select asp-for="OdemeTipi" class="form-select" asp-items="@(ViewBag.OdemeTipleri as List<SelectListItem>)"></select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Basit Usul / KDV</label>
+            <select asp-for="VergiUsulu" class="form-select" asp-items="@(ViewBag.VergiUsulleri as List<SelectListItem>)"></select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Banka</label>
+            <select asp-for="BankaHesabiId" class="form-select" asp-items="@(ViewBag.BankaHesaplari as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Ödeme Grubu</label>
+            <select asp-for="OdemeGrubuId" class="form-select" asp-items="@(ViewBag.OdemeGruplari as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="HesapSahibi" class="form-label">Hesap Sahibi</label>
+            <input asp-for="HesapSahibi" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="HesapNo" class="form-label">Hesap No</label>
+            <input asp-for="HesapNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Iban" class="form-label">IBAN</label>
+            <input asp-for="Iban" class="form-control" maxlength="26" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="YakitOrani" class="form-label">Yakıt Oranı</label>
+            <input asp-for="YakitOrani" class="form-control" type="number" step="0.01" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="OkulKomisyonu" class="form-label">Okul Komisyonu</label>
+            <input asp-for="OkulKomisyonu" class="form-control" type="number" step="0.01" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Durum</label>
+            <select asp-for="IsActive" class="form-select">
+                <option value="true">Aktif</option>
+                <option value="false">Pasif</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Not" class="form-label"></label>
+        <textarea asp-for="Not" class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

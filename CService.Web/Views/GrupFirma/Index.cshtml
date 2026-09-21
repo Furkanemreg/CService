@@ -1,23 +1,36 @@
-﻿@model List<CService.Core.Entities.GrupFirma>
+﻿@model List<CService.Web.Models.GrupFirmalar.GrupFirmaListItemViewModel>
 @{
     ViewData["Title"] = "Grup Firmalar";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Grup Firmalar</h2>
-    <a asp-action="Create" class="btn btn-primary">Yeni Bölge</a>
+    <a asp-action="Create" class="btn btn-primary">Yeni Grup Firma</a>
 </div>
 
 <table class="table table-striped">
-    <thead><tr><th>Ad</th><th></th></tr></thead>
+    <thead>
+        <tr>
+            <th>Kodu</th>
+            <th>Adı</th>
+            <th>Bölge</th>
+            <th>Durum</th>
+            <th>Üye Firmalar</th>
+            <th></th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Ad</td>
+                <td>@item.GrupFirma.FirmaKodu</td>
+                <td>@item.GrupFirma.Adi</td>
+                <td>@item.GrupFirma.Bolge?.Ad</td>
+                <td>@(item.GrupFirma.IsActive ? "Aktif" : "Pasif")</td>
+                <td>@(item.UyeFirmalar.Count > 0 ? string.Join(", ", item.UyeFirmalar) : "—")</td>
                 <td class="text-end">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>
-                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">
+                    <a asp-action="Edit" asp-route-id="@item.GrupFirma.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>
+                    <form asp-action="Delete" asp-route-id="@item.GrupFirma.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">
                         <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
                     </form>
                 </td>

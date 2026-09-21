@@ -1,0 +1,101 @@
+﻿.error-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 6rem);
+    padding: 2rem 1rem;
+}
+
+.error-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+    padding: 2.5rem;
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+}
+
+.error-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    margin-bottom: 1.25rem;
+}
+
+.error-icon-danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.error-icon-warning {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.error-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: .5rem;
+}
+
+.error-subtitle {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.error-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+}
+
+.error-chip {
+    background: #f1f5f9;
+    color: #334155;
+    border-radius: 999px;
+    padding: .35rem .85rem;
+    font-size: .8rem;
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: left;
+    margin-bottom: 1rem;
+    font-size: .9rem;
+}
+
+.error-details {
+    text-align: left;
+    margin-top: .5rem;
+}
+
+    .error-details summary {
+        cursor: pointer;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: .85rem;
+        margin-bottom: .5rem;
+    }
+
+    .error-details pre {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 10px;
+        padding: 1rem;
+        max-height: 320px;
+        overflow: auto;
+        font-size: .78rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }

@@ -1,0 +1,204 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Web.Models.Araclar.AracCreateViewModel
+@{
+    ViewData["Title"] = "Yeni Araç";
+}
+
+<h2 class="mb-4">Yeni Araç</h2>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Firma *</label>
+            <select asp-for="FirmaId" class="form-select" asp-items="@(ViewBag.Firmalar as SelectList)" required>
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="FirmaId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h5 class="mb-3">Araç Sahibi</h5>
+    <div class="mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="sahipMode" id="modeExisting" value="existing" checked>
+            <label class="form-check-label" for="modeExisting">Var Olan Araç Sahibi Seç</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="sahipMode" id="modeNew" value="new">
+            <label class="form-check-label" for="modeNew">Yeni Araç Sahibi Oluştur</label>
+        </div>
+    </div>
+
+    <div id="existingOwnerBlock" class="row">
+        <div class="col-md-6 mb-3">
+            <select asp-for="ExistingAracSahibiId" class="form-select" asp-items="@(ViewBag.AracSahipleri as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="newOwnerBlock" class="row" style="display:none;">
+        <div class="col-md-3 mb-3">
+            <label asp-for="YeniSahibiKod" class="form-label">Kod</label>
+            <input asp-for="YeniSahibiKod" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="YeniSahibiAdi" class="form-label">Adı</label>
+            <input asp-for="YeniSahibiAdi" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="YeniSahibiSoyad" class="form-label">Soyadı</label>
+            <input asp-for="YeniSahibiSoyad" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="YeniSahibiTcKimlikNo" class="form-label">TC Kimlik No</label>
+            <input asp-for="YeniSahibiTcKimlikNo" class="form-control" maxlength="11" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="YeniSahibiTel" class="form-label">Tel</label>
+            <input asp-for="YeniSahibiTel" class="form-control" />
+        </div>
+
+        <div class="form-text" style="font-size: 11px;">
+            <i class="fa-solid fa-circle-info me-1"></i>
+            Girdiğiniz bilgilerle yeni araç sahibi oluşacak ve daha sonra <strong>Araç Sahipleri</strong> menüsünden düzenlenebilecektir.
+        </div>
+    </div>
+
+    <hr class="my-4" />
+    <h5 class="mb-3">Araç Bilgileri</h5>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Plaka" class="form-label">Plaka *</label>
+            <input asp-for="Plaka" class="form-control" required />
+            <span asp-validation-for="Plaka" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Durum</label>
+            <select asp-for="IsActive" class="form-select">
+                <option value="true">Aktif</option>
+                <option value="false">Pasif</option>
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Ödeme Durumu</label>
+            <select asp-for="OdemeDurumu" class="form-select" asp-items="@(ViewBag.OdemeDurumlari as List<SelectListItem>)"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Cinsi</label>
+            <select asp-for="Cinsi" class="form-select" asp-items="@(ViewBag.Cinsler as List<SelectListItem>)"></select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Markası</label>
+            <select asp-for="Marka" class="form-select" asp-items="@(ViewBag.Markalar as List<SelectListItem>)"></select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Tipi</label>
+            <select asp-for="Tipi" class="form-select" asp-items="@(ViewBag.Tipler as List<SelectListItem>)"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <label asp-for="Modeli" class="form-label"></label>
+            <input asp-for="Modeli" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="Kapasite" class="form-label"></label>
+            <input asp-for="Kapasite" class="form-control" type="number" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="IlkGirisTarihi" class="form-label">İlk Giriş Tarihi</label>
+            <input asp-for="IlkGirisTarihi" class="form-control" type="date" />
+        </div>
+        <div class="col-md-3 mb-3 d-flex align-items-end">
+            <div class="form-check form-switch toggle-switch">
+                <input asp-for="Klima" class="form-check-input" role="switch" />
+                <label asp-for="Klima" class="form-check-label">Klima</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="RuhsatNo" class="form-label">Ruhsat No</label>
+            <input asp-for="RuhsatNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="MotorNo" class="form-label">Motor No</label>
+            <input asp-for="MotorNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SasiNo" class="form-label">Şasi No</label>
+            <input asp-for="SasiNo" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="RuhsatSahibi" class="form-label">Ruhsat Sahibi</label>
+            <input asp-for="RuhsatSahibi" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="RuhsatSahibiKimlikNo" class="form-label">R.S. Kimlik No</label>
+            <input asp-for="RuhsatSahibiKimlikNo" class="form-control" maxlength="11" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="SoforAdi" class="form-label">Şoför Adı</label>
+            <input asp-for="SoforAdi" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SoforKimlikNo" class="form-label">Şoför Kimlik No</label>
+            <input asp-for="SoforKimlikNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SoforTelefon" class="form-label">Şoför Telefon</label>
+            <input asp-for="SoforTelefon" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="HostesAdi" class="form-label">Hostes Adı</label>
+            <input asp-for="HostesAdi" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="HostesKimlikNo" class="form-label">Hostes Kimlik No</label>
+            <input asp-for="HostesKimlikNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="HostesTelefon" class="form-label">Hostes Telefon</label>
+            <input asp-for="HostesTelefon" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            const existingBlock = document.getElementById('existingOwnerBlock');
+            const newBlock = document.getElementById('newOwnerBlock');
+            document.querySelectorAll('input[name="sahipMode"]').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    const isNew = document.getElementById('modeNew').checked;
+                    existingBlock.style.display = isNew ? 'none' : '';
+                    newBlock.style.display = isNew ? '' : 'none';
+                });
+            });
+        })();
+    </script>
+}

@@ -16,7 +16,7 @@
             <span asp-validation-for="Adi" class="text-danger"></span>
         </div>
         <div class="col-md-6 mb-3">
-            <label asp-for="FirmaKodu" class="form-label">Firma Kodu</label>
+            <label asp-for="FirmaKodu" class="form-label">Firma Kodu *</label>
             <input asp-for="FirmaKodu" class="form-control" />
             <span asp-validation-for="FirmaKodu" class="text-danger"></span>
         </div>
@@ -27,6 +27,10 @@
             <label asp-for="VergiNo" class="form-label">VKN / TCKN</label>
             <input asp-for="VergiNo" class="form-control" />
             <span asp-validation-for="VergiNo" class="text-danger"></span>
+            <div class="form-text" style="font-size: 11px;">
+                <i class="fa-solid fa-circle-info me-1"></i>
+                Şahıs firmalarında 11 haneli TCKN, diğer firmalarda 10 haneli VKN giriniz.
+            </div>
         </div>
         <div class="col-md-6 mb-3">
             <label asp-for="VergiDairesi" class="form-label">Vergi Dairesi</label>
@@ -110,6 +114,16 @@
         <span asp-validation-for="OkulServisi" class="text-danger"></span>
     </div>
 
+    <div class="row" id="okulOdemeTipiRow">
+        <div class="col-md-6 mb-3">
+            <label asp-for="OkulOdemeTpi" class="form-label">Okul Ödeme Tipi</label>
+            <select asp-for="OkulOdemeTpi" class="form-select" asp-items="@(ViewBag.OkulOdemeTipleri as List<SelectListItem>)">
+                <option value="">Seçiniz</option>
+            </select>
+            <span asp-validation-for="OkulOdemeTpi" class="text-danger"></span>
+        </div>
+    </div>
+
     <div class="mb-3">
         <label asp-for="Unvan" class="form-label"></label>
         <textarea asp-for="Unvan" class="form-control" rows="2"></textarea>
@@ -145,4 +159,18 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        (function () {
+            const checkbox = document.getElementById('OkulServisi');
+            const row = document.getElementById('okulOdemeTipiRow');
+            if (!checkbox || !row) return;
+
+            function syncVisibility() {
+                row.style.display = checkbox.checked ? '' : 'none';
+            }
+
+            checkbox.addEventListener('change', syncVisibility);
+            syncVisibility();
+        })();
+    </script>
 }

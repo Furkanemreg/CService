@@ -9,15 +9,48 @@
 </div>
 
 <table class="table table-striped">
-    <thead><tr><th>Kodu</th><th>Adı</th><th>Bölge</th><th>Grup</th><th>Durum</th><th></th></tr></thead>
+    <thead>
+        <tr>
+            <th>Kodu</th>
+            <th>Adı</th>
+            <th>VKN / TCKN</th>
+            <th>Tür</th>
+            <th>Bölge</th>
+            <th>Durum</th>
+            <th></th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
                 <td>@item.FirmaKodu</td>
                 <td>@item.Adi</td>
-                <td>@item.Bolge?.Ad</td>
-                <td>@item.GrupFirma?.Ad</td>
+                <td>@(item.VergiNo ?? "-")</td>
+                <td>
+                    @if (item.VergiNo?.Length == 11)
+                    {
+                        <span class="firma-type-badge firma-type-person">
+                            <i class="fa fa-user"></i>
+                            Şahıs
+                        </span>
+                    }
+                    else if (item.VergiNo?.Length == 10)
+                    {
+                        <span class="firma-type-badge firma-type-company">
+                            <i class="fa fa-building"></i>
+                            Tüzel
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="firma-type-badge firma-type-unknown">
+                            <i class="fa fa-question"></i>
+                            -
+                        </span>
+                    }
+                </td>
+                <td>@(item.Bolge?.Ad ?? "-")</td>
                 <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
                 <td class="text-end">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>

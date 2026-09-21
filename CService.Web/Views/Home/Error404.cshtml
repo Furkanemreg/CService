@@ -1,0 +1,32 @@
+﻿@model CService.Web.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Sayfa Bulunamadı";
+}
+
+<div class="error-page">
+    <div class="error-card">
+        <div class="error-icon error-icon-warning">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+                <path d="M9 9l4 4M13 9l-4 4" />
+            </svg>
+        </div>
+
+        <h2 class="error-title">404 — Sayfa Bulunamadı</h2>
+        <p class="error-subtitle">Aradığınız sayfa mevcut değil ya da taşınmış olabilir.</p>
+
+        <div class="error-meta">
+            @if (!string.IsNullOrEmpty(Model.Path))
+            {
+                <span class="error-chip"><strong>Yol:</strong> @Model.Path</span>
+            }
+            @if (Model.ShowRequestId)
+            {
+                <span class="error-chip"><strong>Request Id:</strong> @Model.RequestId</span>
+            }
+        </div>
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-4">Ana Sayfaya Dön</a>
+    </div>
+</div>

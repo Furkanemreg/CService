@@ -8,18 +8,20 @@
 <form asp-action="Create" method="post" class="col-md-5">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
+        <label asp-for="Email" class="form-label">E-Posta Adresi</label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
+        <label asp-for="Password" class="form-label">Şifre</label>
         <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="Role" class="form-label"></label>
-        <select asp-for="Role" class="form-select" asp-items="@(new SelectList((string[])ViewBag.Roles))"></select>
+        <label asp-for="Role" class="form-label">Kullanıcı Rolü</label>
+        <select asp-for="Role" class="form-select" asp-items="ViewBag.Roles">
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Oluştur</button>
     <a asp-action="Index" class="btn btn-link">Vazgeç</a>

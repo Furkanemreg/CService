@@ -7,8 +7,13 @@
 <form asp-action="Create" method="post" class="col-md-5">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="mb-3">
-        <label asp-for="Ad" class="form-label">Ad *</label>
+        <label asp-for="Ad" class="form-label">Bölge Adı *</label>
         <input asp-for="Ad" class="form-control" required />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Kod" class="form-label">Bölge Kodu *</label>
+        <input asp-for="Kod" class="form-control" />
         <span asp-validation-for="Ad" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Oluştur</button>

@@ -1,4 +1,5 @@
 using CService.Core.Data.Seeders;
+using CService.Core.Middlewares;
 using CService.Web.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 

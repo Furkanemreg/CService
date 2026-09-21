@@ -139,6 +139,222 @@ namespace CService.Core.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("CService.Core.Entities.Arac", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AracSahibiId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Cinsi")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FirmaId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("HostesAdi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HostesKimlikNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HostesTelefon")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("IlkGirisTarihi")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("Kapasite")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Klima")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Marka")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Modeli")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MotorNo")
+                        .HasColumnType("text");
+
+                    b.Property<int>("OdemeDurumu")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Plaka")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RuhsatNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RuhsatSahibi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RuhsatSahibiKimlikNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SasiNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SoforAdi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SoforKimlikNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SoforTelefon")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Tipi")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AracSahibiId");
+
+                    b.HasIndex("FirmaId");
+
+                    b.ToTable("Araclar");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.AracSahibi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adi")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Adres")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("BankaHesabiId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HesapNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HesapSahibi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Iban")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Not")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("OdemeGrubuId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OdemeTipi")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("OkulKomisyonu")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Sorumlu")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Soyad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TcKimlikNo")
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)");
+
+                    b.Property<string>("Tel")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Vekil")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VekilTel")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VergiDairesi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VergiNo")
+                        .HasColumnType("text");
+
+                    b.Property<int>("VergiUsulu")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("YakitOrani")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankaHesabiId");
+
+                    b.HasIndex("OdemeGrubuId");
+
+                    b.ToTable("AracSahipleri");
+                });
+
             modelBuilder.Entity("CService.Core.Entities.BankaHesabi", b =>
                 {
                     b.Property<int>("Id")
@@ -217,6 +433,10 @@ namespace CService.Core.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
@@ -282,6 +502,9 @@ namespace CService.Core.Migrations
 
                     b.Property<string>("Not")
                         .HasColumnType("text");
+
+                    b.Property<int?>("OkulOdemeTpi")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("OkulServisi")
                         .HasColumnType("boolean");
@@ -419,6 +642,107 @@ namespace CService.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Adi")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Adres")
+                        .HasColumnType("text");
+
+                    b.Property<int>("BolgeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirmaKodu")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("HavaleBankaHesabiId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("KrediKartiBankaHesabiId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Mail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Not")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("OkulOdemeTpi")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("OkulServisi")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Tel1")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Tel2")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Unvan")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("VatRateId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("VergiDairesi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VergiNo")
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)");
+
+                    b.Property<int?>("WitholdingRateId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BolgeId");
+
+                    b.HasIndex("HavaleBankaHesabiId");
+
+                    b.HasIndex("KrediKartiBankaHesabiId");
+
+                    b.HasIndex("VatRateId");
+
+                    b.HasIndex("WitholdingRateId");
+
+                    b.ToTable("GrupFirmalar");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.OdemeGrubu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("text");
@@ -438,6 +762,10 @@ namespace CService.Core.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
@@ -446,7 +774,7 @@ namespace CService.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GrupFirmalar");
+                    b.ToTable("OdemeGruplari");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -581,6 +909,42 @@ namespace CService.Core.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CService.Core.Entities.Arac", b =>
+                {
+                    b.HasOne("CService.Core.Entities.AracSahibi", "AracSahibi")
+                        .WithMany()
+                        .HasForeignKey("AracSahibiId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CService.Core.Entities.Firma", "Firma")
+                        .WithMany()
+                        .HasForeignKey("FirmaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AracSahibi");
+
+                    b.Navigation("Firma");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.AracSahibi", b =>
+                {
+                    b.HasOne("CService.Core.Entities.BankaHesabi", "BankaHesabi")
+                        .WithMany()
+                        .HasForeignKey("BankaHesabiId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CService.Core.Entities.OdemeGrubu", "OdemeGrubu")
+                        .WithMany()
+                        .HasForeignKey("OdemeGrubuId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("BankaHesabi");
+
+                    b.Navigation("OdemeGrubu");
+                });
+
             modelBuilder.Entity("CService.Core.Entities.Firma", b =>
                 {
                     b.HasOne("CService.Core.Entities.Bolge", "Bolge")
@@ -618,6 +982,46 @@ namespace CService.Core.Migrations
                     b.Navigation("Bolge");
 
                     b.Navigation("GrupFirma");
+
+                    b.Navigation("HavaleBankaHesabi");
+
+                    b.Navigation("KrediKartiBankaHesabi");
+
+                    b.Navigation("VatRate");
+
+                    b.Navigation("WitholdingRate");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.GrupFirma", b =>
+                {
+                    b.HasOne("CService.Core.Entities.Bolge", "Bolge")
+                        .WithMany()
+                        .HasForeignKey("BolgeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CService.Core.Entities.BankaHesabi", "HavaleBankaHesabi")
+                        .WithMany()
+                        .HasForeignKey("HavaleBankaHesabiId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CService.Core.Entities.BankaHesabi", "KrediKartiBankaHesabi")
+                        .WithMany()
+                        .HasForeignKey("KrediKartiBankaHesabiId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CService.Core.Entities.General.VatRate", "VatRate")
+                        .WithMany()
+                        .HasForeignKey("VatRateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CService.Core.Entities.General.WitholdingRate", "WitholdingRate")
+                        .WithMany()
+                        .HasForeignKey("WitholdingRateId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Bolge");
 
                     b.Navigation("HavaleBankaHesabi");
 

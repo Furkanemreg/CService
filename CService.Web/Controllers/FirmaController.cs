@@ -1,11 +1,13 @@
 ﻿using CService.Core.Entities;
 using CService.Core.Entities.General;
+using CService.Core.Helpers;
 using CService.Core.Interfaces;
 using CService.Core.Migrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using CService.Core.Constants.Enums;
 using WitholdingRate = CService.Core.Entities.General.WitholdingRate;
 
 namespace CService.Web.Controllers;
@@ -99,17 +101,22 @@ public class FirmaController : Controller
         existing.Tel1 = model.Tel1;
         existing.Tel2 = model.Tel2;
         existing.Mail = model.Mail;
-        existing.Not = model.Not;
-        existing.IsActive = model.IsActive;
         existing.BolgeId = model.BolgeId;
         existing.GrupFirmaId = model.GrupFirmaId;
         existing.VatRateId = model.VatRateId;
         existing.WitholdingRateId = model.WitholdingRateId;
-        existing.OkulServisi = model.OkulServisi;
         existing.HavaleBankaHesabiId = model.HavaleBankaHesabiId;
         existing.KrediKartiBankaHesabiId = model.KrediKartiBankaHesabiId;
+
+        existing.OkulServisi = model.OkulServisi;
+        existing.OkulOdemeTpi = model.OkulOdemeTpi;
+        if (model.OkulServisi == false)
+            existing.OkulOdemeTpi = null;
+
         existing.Unvan = model.Unvan;
         existing.Adres = model.Adres;
+        existing.Not = model.Not;
+        existing.IsActive = model.IsActive;
 
         await _service.UpdateAsync(existing);
         return RedirectToAction(nameof(Index));
@@ -126,7 +133,7 @@ public class FirmaController : Controller
     private async Task PopulateDropdownsAsync()
     {
         ViewBag.Bolgeler = new SelectList(await _bolgeService.GetAllAsync(), nameof(Bolge.Id), nameof(Bolge.Ad));
-        ViewBag.GrupFirmalar = new SelectList(await _grupFirmaService.GetAllAsync(), nameof(GrupFirma.Id), nameof(GrupFirma.Ad));
+        ViewBag.GrupFirmalar = new SelectList(await _grupFirmaService.GetAllAsync(), nameof(GrupFirma.Id), nameof(GrupFirma.Adi));
 
         var vatRates = (await _vatRateService.GetAllAsync()).OrderBy(x => x.Rate).ToList();
         ViewBag.VatRates = new SelectList(vatRates, nameof(VatRate.Id), nameof(VatRate.Description));
@@ -135,5 +142,13 @@ public class FirmaController : Controller
         ViewBag.TevkifatRates = new SelectList(tevkifatRates, nameof(WitholdingRate.Id), nameof(WitholdingRate.Display));
 
         ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
+
+        ViewBag.OkulOdemeTipleri = Enum.GetValues<enmOkulOdemeTpi>()
+            .Select(v => new SelectListItem
+            {
+                Value = ((int)v).ToString(),
+                Text = EnumHelper.GetEnumDescription(v)
+            })
+            .ToList();
     }
 }

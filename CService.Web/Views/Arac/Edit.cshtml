@@ -1,0 +1,143 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Core.Entities.Arac
+@{
+    ViewData["Title"] = "Araç Düzenle";
+}
+
+<h2 class="mb-4">Araç Düzenle</h2>
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Firma *</label>
+            <select asp-for="FirmaId" class="form-select" asp-items="@(ViewBag.Firmalar as SelectList)" required></select>
+            <span asp-validation-for="FirmaId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Araç Sahibi</label>
+            <select asp-for="AracSahibiId" class="form-select" asp-items="@(ViewBag.AracSahipleri as SelectList)"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Plaka" class="form-label">Plaka *</label>
+            <input asp-for="Plaka" class="form-control" required />
+            <span asp-validation-for="Plaka" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Durum</label>
+            <select asp-for="IsActive" class="form-select">
+                <option value="true">Aktif</option>
+                <option value="false">Pasif</option>
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Ödeme Durumu</label>
+            <select asp-for="OdemeDurumu" class="form-select" asp-items="@(ViewBag.OdemeDurumlari as List<SelectListItem>)"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Cinsi</label>
+            <select asp-for="Cinsi" class="form-select" asp-items="@(ViewBag.Cinsler as List<SelectListItem>)"></select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Markası</label>
+            <select asp-for="Marka" class="form-select" asp-items="@(ViewBag.Markalar as List<SelectListItem>)"></select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Tipi</label>
+            <select asp-for="Tipi" class="form-select" asp-items="@(ViewBag.Tipler as List<SelectListItem>)"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <label asp-for="Modeli" class="form-label"></label>
+            <input asp-for="Modeli" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="Kapasite" class="form-label"></label>
+            <input asp-for="Kapasite" class="form-control" type="number" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="IlkGirisTarihi" class="form-label">İlk Giriş Tarihi</label>
+            <input asp-for="IlkGirisTarihi" class="form-control" type="date" />
+        </div>
+        <div class="col-md-3 mb-3 d-flex align-items-end">
+            <div class="form-check form-switch toggle-switch">
+                <input asp-for="Klima" class="form-check-input" role="switch" />
+                <label asp-for="Klima" class="form-check-label">Klima</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="RuhsatNo" class="form-label">Ruhsat No</label>
+            <input asp-for="RuhsatNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="MotorNo" class="form-label">Motor No</label>
+            <input asp-for="MotorNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SasiNo" class="form-label">Şasi No</label>
+            <input asp-for="SasiNo" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="RuhsatSahibi" class="form-label">Ruhsat Sahibi</label>
+            <input asp-for="RuhsatSahibi" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="RuhsatSahibiKimlikNo" class="form-label">R.S. Kimlik No</label>
+            <input asp-for="RuhsatSahibiKimlikNo" class="form-control" maxlength="11" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="SoforAdi" class="form-label">Şoför Adı</label>
+            <input asp-for="SoforAdi" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SoforKimlikNo" class="form-label">Şoför Kimlik No</label>
+            <input asp-for="SoforKimlikNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SoforTelefon" class="form-label">Şoför Telefon</label>
+            <input asp-for="SoforTelefon" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="HostesAdi" class="form-label">Hostes Adı</label>
+            <input asp-for="HostesAdi" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="HostesKimlikNo" class="form-label">Hostes Kimlik No</label>
+            <input asp-for="HostesKimlikNo" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="HostesTelefon" class="form-label">Hostes Telefon</label>
+            <input asp-for="HostesTelefon" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
