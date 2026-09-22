@@ -15,32 +15,57 @@ namespace CService.Web.Controllers;
 [Authorize(Roles = "Admin,Manager")]
 public class FirmaController : Controller
 {
-    private readonly IBaseService<Firma> _service;
+    private readonly IBaseService<Firma> _baseService;
     private readonly IBaseService<Bolge> _bolgeService;
     private readonly IBaseService<GrupFirma> _grupFirmaService;
     private readonly IBaseService<VatRate> _vatRateService;
     private readonly IBaseService<WitholdingRate> _tevkifatRateService;
     private readonly IBaseService<BankaHesabi> _bankaHesabiService;
+    private readonly IBaseService<Arac> _aracService;
 
     public FirmaController(
-        IBaseService<Firma> service,
+        IBaseService<Firma> baseService,
         IBaseService<Bolge> bolgeService,
         IBaseService<GrupFirma> grupFirmaService,
         IBaseService<VatRate> vatRateService,
         IBaseService<WitholdingRate> tevkifatRateService,
-        IBaseService<BankaHesabi> bankaHesabiService)
+        IBaseService<BankaHesabi> bankaHesabiService,
+        IBaseService<Arac> aracService)
     {
-        _service = service;
+        _baseService = baseService;
         _bolgeService = bolgeService;
         _grupFirmaService = grupFirmaService;
         _vatRateService = vatRateService;
         _tevkifatRateService = tevkifatRateService;
         _bankaHesabiService = bankaHesabiService;
+        _aracService = aracService;
+    }
+
+    private async Task PopulateDropdownsAsync()
+    {
+        ViewBag.Bolgeler = new SelectList(await _bolgeService.GetAllAsync(), nameof(Bolge.Id), nameof(Bolge.Ad));
+        ViewBag.GrupFirmalar = new SelectList(await _grupFirmaService.GetAllAsync(), nameof(GrupFirma.Id), nameof(GrupFirma.Adi));
+
+        var vatRates = (await _vatRateService.GetAllAsync()).OrderBy(x => x.Rate).ToList();
+        ViewBag.VatRates = new SelectList(vatRates, nameof(VatRate.Id), nameof(VatRate.Description));
+
+        var tevkifatRates = (await _tevkifatRateService.GetAllAsync()).OrderBy(x => x.Code).ToList();
+        ViewBag.TevkifatRates = new SelectList(tevkifatRates, nameof(WitholdingRate.Id), nameof(WitholdingRate.Display));
+
+        ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
+
+        ViewBag.OkulOdemeTipleri = Enum.GetValues<enmOkulOdemeTpi>()
+            .Select(v => new SelectListItem
+            {
+                Value = ((int)v).ToString(),
+                Text = EnumHelper.GetEnumDescription(v)
+            })
+            .ToList();
     }
 
     public async Task<IActionResult> Index()
     {
-        var items = await _service.Query()
+        var items = await _baseService.Query()
             .Include(f => f.Bolge)
             .Include(f => f.GrupFirma)
             .ToListAsync();
@@ -65,14 +90,14 @@ public class FirmaController : Controller
             return View(model);
         }
 
-        await _service.CreateAsync(model);
+        await _baseService.CreateAsync(model);
         return RedirectToAction(nameof(Index));
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var item = await _service.GetByIdAsync(id);
+        var item = await _baseService.GetByIdAsync(id);
         if (item is null) return NotFound();
 
         await PopulateDropdownsAsync();
@@ -91,7 +116,7 @@ public class FirmaController : Controller
             return View(model);
         }
 
-        var existing = await _service.GetByIdAsync(id);
+        var existing = await _baseService.GetByIdAsync(id);
         if (existing is null) return NotFound();
 
         existing.FirmaKodu = model.FirmaKodu;
@@ -118,7 +143,7 @@ public class FirmaController : Controller
         existing.Not = model.Not;
         existing.IsActive = model.IsActive;
 
-        await _service.UpdateAsync(existing);
+        await _baseService.UpdateAsync(existing);
         return RedirectToAction(nameof(Index));
     }
 
@@ -126,29 +151,21 @@ public class FirmaController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
-        await _service.DeleteAsync(id);
+        await _baseService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
 
-    private async Task PopulateDropdownsAsync()
+    [HttpGet]
+    public async Task<IActionResult> GetVehicles(int firmaId)
     {
-        ViewBag.Bolgeler = new SelectList(await _bolgeService.GetAllAsync(), nameof(Bolge.Id), nameof(Bolge.Ad));
-        ViewBag.GrupFirmalar = new SelectList(await _grupFirmaService.GetAllAsync(), nameof(GrupFirma.Id), nameof(GrupFirma.Adi));
+        var items = await _aracService.Query()
+            .Where(a => a.FirmaId == firmaId)
+            .Include(a => a.AracSahibi)
+            .Include(a => a.AracCinsi)
+            .Include(a => a.AracTipi)
+            .Include(a => a.AracMarka)
+            .ToListAsync();
 
-        var vatRates = (await _vatRateService.GetAllAsync()).OrderBy(x => x.Rate).ToList();
-        ViewBag.VatRates = new SelectList(vatRates, nameof(VatRate.Id), nameof(VatRate.Description));
-
-        var tevkifatRates = (await _tevkifatRateService.GetAllAsync()).OrderBy(x => x.Rate).ToList();
-        ViewBag.TevkifatRates = new SelectList(tevkifatRates, nameof(WitholdingRate.Id), nameof(WitholdingRate.Display));
-
-        ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
-
-        ViewBag.OkulOdemeTipleri = Enum.GetValues<enmOkulOdemeTpi>()
-            .Select(v => new SelectListItem
-            {
-                Value = ((int)v).ToString(),
-                Text = EnumHelper.GetEnumDescription(v)
-            })
-            .ToList();
+        return PartialView("_VehiclesPartial", items);
     }
 }

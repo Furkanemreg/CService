@@ -1,5 +1,6 @@
 ﻿using CService.Core.Extensions;
 using CService.Core.Interfaces;
+using CService.Core.Middlewares;
 using CService.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,8 @@ public static class HostingConfig
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseMiddleware<OpeningPasswordMiddleware>();
 
         app.MapControllerRoute(
             name: "default",

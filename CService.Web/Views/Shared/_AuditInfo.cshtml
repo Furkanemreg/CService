@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CService.Core.Entities
+@inject UserManager<ApplicationUser> UserManager
+@model CService.Core.Entities.BaseEntity
+
+@if (User.IsInRole("Admin"))
+{
+    var createdByUser = !string.IsNullOrEmpty(Model.CreatedBy) ? await UserManager.FindByIdAsync(Model.CreatedBy) : null;
+    var updatedByUser = !string.IsNullOrEmpty(Model.UpdatedBy) ? await UserManager.FindByIdAsync(Model.UpdatedBy) : null;
+
+    <div class="audit-info">
+        <div class="audit-info-line">Oluşturan: @(createdByUser?.Email ?? Model.CreatedBy ?? "-") &middot; @Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</div>
+        @if (Model.UpdatedDate.HasValue)
+        {
+            <div class="audit-info-line">Güncelleyen: @(updatedByUser?.Email ?? Model.UpdatedBy ?? "-") &middot; @Model.UpdatedDate.Value.ToString("dd.MM.yyyy HH:mm")</div>
+        }
+    </div>
+}

@@ -24,18 +24,26 @@ public enum enmOkulOdemeTpi
     AylikSozlesme = 3
 }
 
-public enum enmOdemeTipi
+//public enum enmOdemeTipi
+//{
+//    [Description("Elden Ödeme")]
+//    EldenOdeme = 1,
+
+//    [Description("Banka Havalesi")]
+//    BankaHavalesi = 2,
+
+//    [Description("Ödeme Yapma")]
+//    OdemeYapma = 3
+//}
+
+public enum enmKdvDurumu
 {
-    [Description("Elden Ödeme")]
-    EldenOdeme = 1,
+    [Description("KDV'yi Etkilemez")]
+    Etkilemez = 0,
 
-    [Description("Banka Havalesi")]
-    BankaHavalesi = 2,
-
-    [Description("Ödeme Yapma")]
-    OdemeYapma = 3
+    [Description("KDV Matrahından Düş")]
+    MatrahtanDus = 1
 }
-
 public enum enmVergiUsulu
 {
     [Description("Basit Usul")]

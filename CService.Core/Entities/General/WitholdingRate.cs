@@ -12,8 +12,7 @@ namespace CService.Core.Entities.General
         public string? Code { get; set; }
         public string? Description { get; set; }
         public int Rate { get; set; } /* Örneğin 3/10 için 3 girilir. */
-
         [NotMapped]
-        public string Display => $"{Rate}/10";
+        public string Display => $"{Code} - {Description} ({Rate}/10)";
     }
 }

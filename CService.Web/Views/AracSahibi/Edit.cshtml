@@ -70,7 +70,9 @@
     <div class="row">
         <div class="col-md-4 mb-3">
             <label class="form-label">Ödeme Tipi</label>
-            <select asp-for="OdemeTipi" class="form-select" asp-items="@(ViewBag.OdemeTipleri as List<SelectListItem>)"></select>
+            <select asp-for="OdemeTipiId" class="form-select" asp-items="@(ViewBag.OdemeTipleri as SelectList)">
+                <option value="">Seçiniz</option>
+            </select>
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Basit Usul / KDV</label>
@@ -134,6 +136,8 @@
     <button type="submit" class="btn btn-primary">Kaydet</button>
     <a asp-action="Index" class="btn btn-link">Vazgeç</a>
 </form>
+
+<partial name="_AuditInfo" model="Model" />
 
 @section Scripts {
     @{

@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Core.Entities.OdemeTipi
+@{
+    ViewData["Title"] = "Ödeme Tipi Düzenle";
+}
+
+<h2 class="mb-4">Yeni Ödeme Tipi</h2>
+<form asp-action="Create" method="post" class="col-md-5">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Kod" class="form-label">Kod *</label>
+        <input asp-for="Kod" class="form-control" required />
+        <span asp-validation-for="Kod" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label">Ad *</label>
+        <input asp-for="Ad" class="form-control" required />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Kdv" class="form-label">KDV</label>
+        <select asp-for="Kdv" class="form-select" asp-items="@(ViewBag.KdvDurumlari as List<SelectListItem>)"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>
+
+<partial name="_AuditInfo" model="Model" />

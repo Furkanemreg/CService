@@ -1,0 +1,43 @@
+﻿@model List<CService.Core.Entities.Arac>
+
+@if (!Model.Any())
+{
+    <p class="text-muted mb-0">Bu araç sahibine ait araç bulunamadı.</p>
+}
+else
+{
+    <table class="table table-sm table-striped mb-0">
+        <thead>
+            <tr>
+                <th>Plaka</th>
+                <th>Firma</th>
+                <th>Cinsi</th>
+                <th>Tipi</th>
+                <th>Markası</th>
+                <th>Durum</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Plaka</td>
+                    <td>@(item.Firma?.Adi ?? "-")</td>
+                    <td>@(item.AracCinsi?.Ad ?? "-")</td>
+                    <td>@(item.AracTipi?.Ad ?? "-")</td>
+                    <td>@(item.AracMarka?.Ad ?? "-")</td>
+                    <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-sm btn-outline-warning btn-icon">
+                            <svg><use href="#icon-hareket"></use></svg> Hareketler
+                        </button>
+                        <a asp-controller="Arac" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary btn-icon">
+                            <svg><use href="#icon-edit"></use></svg> Düzenle
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

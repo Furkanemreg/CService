@@ -11,13 +11,50 @@ public class AccountController : Controller
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IBaseService<GlobalSetting> _globalSettingService;
     private readonly IActivityLogger _activityLogger;
 
-    public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogger activityLogger)
+    public AccountController(
+        SignInManager<ApplicationUser> signInManager,
+        UserManager<ApplicationUser> userManager,
+        IBaseService<GlobalSetting> globalSettingService,
+        IActivityLogger activityLogger)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _globalSettingService = globalSettingService;
         _activityLogger = activityLogger;
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult OpeningPassword(string? returnUrl = null)
+    {
+        ViewBag.ReturnUrl = returnUrl;
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> OpeningPassword(string password, string? returnUrl)
+    {
+        var setting = (await _globalSettingService.GetAllAsync()).FirstOrDefault();
+
+        if (setting is null || password != setting.OpeningPassword)
+        {
+            ModelState.AddModelError(string.Empty, "Şifre hatalı. Tekrar deneyin veya yöneticinizle iletişime geçin.");
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        Response.Cookies.Append("OpeningPasswordVerified", "true", new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.UtcNow.AddHours(12),
+            IsEssential = true
+        });
+
+        return LocalRedirect(string.IsNullOrEmpty(returnUrl) ? Url.Action("Index", "Home")! : returnUrl);
     }
 
     [AllowAnonymous]

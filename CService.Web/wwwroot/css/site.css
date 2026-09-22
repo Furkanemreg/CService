@@ -399,6 +399,75 @@ body {
     border: 1px solid #e2e8f0;
 }
 
+.modal-title-icon {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.15em;
+    margin-right: 0.35rem;
+}
+,
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+}
+
+.btn-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-outline-warning {
+    color: #b45309;
+    border-color: #b45309;
+}
+
+.btn-outline-warning:hover {
+    background-color: #b45309;
+    border-color: #b45309;
+    color: #fff;
+}
+
+.btn-outline-indigo {
+    color: #6366f1;
+    border-color: #6366f1;
+}
+
+.btn-outline-indigo:hover {
+    background-color: #6366f1;
+    border-color: #6366f1;
+    color: #fff;
+}
+
+.btn-icon-inline {
+    width: 14px;
+    height: 14px;
+    vertical-align: -0.1em;
+    margin-right: 0.3rem;
+}
+
+.audit-info {
+    position: fixed;
+    left: var(--sidebar-width);
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0.6rem 2rem;
+    background: #fff;
+    border-top: 1px solid #e2e8f0;
+    z-index: 10;
+}
+
+.audit-info-line {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
 @media (max-width: 991.98px) {
     .sidebar {
         transform: translateX(-100%);

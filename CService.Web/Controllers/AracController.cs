@@ -37,6 +37,18 @@ public class AracController : Controller
         _tipiService = tipiService;
     }
 
+    private async Task PopulateDropdownsAsync()
+    {
+        ViewBag.OdemeDurumlari = Enum.GetValues<enmOdemeDurumu>().Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
+
+        ViewBag.Cinsler = new SelectList(await _cinsiService.GetAllAsync(), nameof(AracCinsi.Id), nameof(AracCinsi.Ad));
+        ViewBag.Markalar = new SelectList(await _markaService.GetAllAsync(), nameof(AracMarka.Id), nameof(AracMarka.Ad));
+        ViewBag.Tipler = new SelectList(await _tipiService.GetAllAsync(), nameof(AracTipi.Id), nameof(AracTipi.Ad));
+
+        ViewBag.AracSahipleri = new SelectList(await _aracSahibiService.GetAllAsync(), nameof(AracSahibi.Id), nameof(AracSahibi.TamAdi));
+        ViewBag.Firmalar = new SelectList(await _firmaService.GetAllAsync(), nameof(Firma.Id), nameof(Firma.Adi));
+    }
+
     public async Task<IActionResult> Index()
     {
         var items = await _service.Query()
@@ -183,17 +195,5 @@ public class AracController : Controller
     {
         await _service.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
-    }
-
-    private async Task PopulateDropdownsAsync()
-    {
-        ViewBag.OdemeDurumlari = Enum.GetValues<enmOdemeDurumu>().Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) }).ToList();
-
-        ViewBag.Cinsler = new SelectList(await _cinsiService.GetAllAsync(), nameof(AracCinsi.Id), nameof(AracCinsi.Ad));
-        ViewBag.Markalar = new SelectList(await _markaService.GetAllAsync(), nameof(AracMarka.Id), nameof(AracMarka.Ad));
-        ViewBag.Tipler = new SelectList(await _tipiService.GetAllAsync(), nameof(AracTipi.Id), nameof(AracTipi.Ad));
-
-        ViewBag.AracSahipleri = new SelectList(await _aracSahibiService.GetAllAsync(), nameof(AracSahibi.Id), nameof(AracSahibi.TamAdi));
-        ViewBag.Firmalar = new SelectList(await _firmaService.GetAllAsync(), nameof(Firma.Id), nameof(Firma.Adi));
     }
 }

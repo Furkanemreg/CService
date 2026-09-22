@@ -6,27 +6,46 @@ using CService.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace CService.Web.Controllers;
 
 [Authorize(Roles = "Admin,Manager")]
 public class AracSahibiController : Controller
 {
-    private readonly IBaseService<AracSahibi> _service;
+    private readonly IBaseService<AracSahibi> _baseService;
     private readonly IBaseService<BankaHesabi> _bankaHesabiService;
     private readonly IBaseService<OdemeGrubu> _odemeGrubuService;
+    private readonly IBaseService<Arac> _aracService;
+    private readonly IBaseService<OdemeTipi> _odemeTipiService;
 
     public AracSahibiController(
-        IBaseService<AracSahibi> service,
+        IBaseService<AracSahibi> baseService,
         IBaseService<BankaHesabi> bankaHesabiService,
-        IBaseService<OdemeGrubu> odemeGrubuService)
+        IBaseService<OdemeGrubu> odemeGrubuService,
+        IBaseService<Arac> aracService,
+        IBaseService<OdemeTipi> odemeTipiService)
     {
-        _service = service;
+        _baseService = baseService;
         _bankaHesabiService = bankaHesabiService;
         _odemeGrubuService = odemeGrubuService;
+        _aracService = aracService;
+        _odemeTipiService = odemeTipiService;
     }
 
-    public async Task<IActionResult> Index() => View(await _service.GetAllAsync());
+    private async Task PopulateDropdownsAsync()
+    {
+        ViewBag.OdemeTipleri = new SelectList(await _odemeTipiService.GetAllAsync(), nameof(OdemeTipi.Id), nameof(OdemeTipi.Ad));
+
+        ViewBag.VergiUsulleri = Enum.GetValues<enmVergiUsulu>()
+            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) })
+            .ToList();
+
+        ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
+        ViewBag.OdemeGruplari = new SelectList(await _odemeGrubuService.GetAllAsync(), nameof(OdemeGrubu.Id), nameof(OdemeGrubu.Ad));
+    }
+
+    public async Task<IActionResult> Index() => View(await _baseService.GetAllAsync());
 
     [HttpGet]
     public async Task<IActionResult> Create()
@@ -45,14 +64,14 @@ public class AracSahibiController : Controller
             return View(model);
         }
 
-        await _service.CreateAsync(model);
+        await _baseService.CreateAsync(model);
         return RedirectToAction(nameof(Index));
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var item = await _service.GetByIdAsync(id);
+        var item = await _baseService.GetByIdAsync(id);
         if (item is null) return NotFound();
 
         await PopulateDropdownsAsync();
@@ -71,7 +90,7 @@ public class AracSahibiController : Controller
             return View(model);
         }
 
-        var existing = await _service.GetByIdAsync(id);
+        var existing = await _baseService.GetByIdAsync(id);
         if (existing is null) return NotFound();
 
         existing.Kod = model.Kod;
@@ -87,7 +106,7 @@ public class AracSahibiController : Controller
         existing.Not = model.Not;
         existing.Sorumlu = model.Sorumlu;
         existing.IsActive = model.IsActive;
-        existing.OdemeTipi = model.OdemeTipi;
+        existing.OdemeTipiId = model.OdemeTipiId;
         existing.VergiUsulu = model.VergiUsulu;
         existing.BankaHesabiId = model.BankaHesabiId;
         existing.HesapSahibi = model.HesapSahibi;
@@ -97,7 +116,7 @@ public class AracSahibiController : Controller
         existing.OkulKomisyonu = model.OkulKomisyonu;
         existing.OdemeGrubuId = model.OdemeGrubuId;
 
-        await _service.UpdateAsync(existing);
+        await _baseService.UpdateAsync(existing);
         return RedirectToAction(nameof(Index));
     }
 
@@ -105,21 +124,21 @@ public class AracSahibiController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
-        await _service.DeleteAsync(id);
+        await _baseService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
 
-    private async Task PopulateDropdownsAsync()
+    [HttpGet]
+    public async Task<IActionResult> GetVehicles(int aracSahibiId)
     {
-        ViewBag.OdemeTipleri = Enum.GetValues<enmOdemeTipi>()
-            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) })
-            .ToList();
+        var items = await _aracService.Query()
+            .Where(a => a.AracSahibiId == aracSahibiId)
+            .Include(a => a.Firma)
+            .Include(a => a.AracCinsi)
+            .Include(a => a.AracTipi)
+            .Include(a => a.AracMarka)
+            .ToListAsync();
 
-        ViewBag.VergiUsulleri = Enum.GetValues<enmVergiUsulu>()
-            .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) })
-            .ToList();
-
-        ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
-        ViewBag.OdemeGruplari = new SelectList(await _odemeGrubuService.GetAllAsync(), nameof(OdemeGrubu.Id), nameof(OdemeGrubu.Ad));
+        return PartialView("_VehiclesPartial", items);
     }
 }

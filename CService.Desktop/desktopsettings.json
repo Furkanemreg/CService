@@ -5,5 +5,8 @@
   "Seed": {
     "AdminEmail": "admin@cservice.local",
     "AdminPassword": "Admin123!"
+  },
+  "AppSettings": {
+    "DefaultOpeningPassword": "1234"
   }
 }

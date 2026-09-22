@@ -3,7 +3,7 @@
     bool IsActive(string controller) => string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
     bool IsInGroup(params string[] controllers) => controllers.Any(IsActive);
     
-    var tanimlarOpen = IsInGroup("Bolge", "BankaHesabi", "OdemeGrubu", "AracCinsi", "AracMarka", "AracTipi");
+    var tanimlarOpen = IsInGroup("Bolge", "BankaHesabi", "OdemeGrubu", "AracCinsi", "AracMarka", "AracTipi", "YakitIstasyonu");
     var aracParametreleriOpen = IsInGroup("AracCinsi", "AracMarka", "AracTipi");
     var cariOpen = IsInGroup("Firma", "GrupFirma", "Arac", "AracSahibi");
     var firmalarOpen = IsInGroup("Firma", "GrupFirma");
@@ -11,6 +11,7 @@
     var yonetimOpen = IsInGroup("Users", "Logs");
     var isChangePasswordPage = IsActive("Account") && ViewContext.RouteData.Values["action"]?.ToString() == "ChangePassword";
 }
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -41,6 +42,17 @@
         <symbol id="icon-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M3 10h18" stroke="currentColor" stroke-width="1.6" /><circle cx="17" cy="14" r="1" fill="currentColor" /></symbol>
         <symbol id="icon-car" viewBox="0 0 24 24"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /><rect x="3" y="11" width="18" height="6" rx="2" stroke="currentColor" stroke-width="1.6" fill="none" /><circle cx="7.5" cy="17.5" r="1.5" fill="currentColor" /><circle cx="16.5" cy="17.5" r="1.5" fill="currentColor" /></symbol>
         <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M4 20l4.5-1L19 8.5a1.5 1.5 0 0 0 0-2.1l-1.4-1.4a1.5 1.5 0 0 0-2.1 0L5 15.5 4 20Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /><path d="M14 6l4 4" stroke="currentColor" stroke-width="1.6" /></symbol>
+        <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M5 7h14M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M7 7l1 13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-13" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></symbol>
+        <symbol id="icon-hareket" viewBox="0 0 24 24">
+            <path d="M4 8h13M17 8l-3-3M17 8l-3 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M20 16H7M7 16l3-3M7 16l3 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+        <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M8 11V7a4 4 0 0 1 7.5-2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" /></symbol>
+        <symbol id="icon-fuel" viewBox="0 0 24 24"><path d="M4 20V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14M4 20h10M4 11h9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /><path d="M15 8h1.5a1.5 1.5 0 0 1 1.5 1.5V13a1.5 1.5 0 0 0 1.5 1.5v0a1.5 1.5 0 0 0 1.5-1.5V9.5L18.5 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+        <symbol id="icon-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="M3 10h18" stroke="currentColor" stroke-width="1.6" /><path d="M6 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></symbol>
     </svg>
 
     <div class="app-shell">
@@ -59,46 +71,6 @@
                 @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                 {
                     <div class="nav-group">
-                        <button class="nav-section-toggle" type="button" data-toggle-target="navTanimlar" aria-expanded="@(tanimlarOpen ? "true" : "false")">
-                            <span>Tanımlar</span>
-                            <svg class="chevron"><use href="#icon-chevron"></use></svg>
-                        </button>
-                        <div class="collapse-panel @(tanimlarOpen ? "open" : "")" id="navTanimlar">
-                            <a class="nav-link nav-level-2 @(IsActive("Bolge") ? "active" : "")" asp-controller="Bolge" asp-action="Index">
-                                <svg><use href="#icon-map"></use></svg>
-                                <span>Bölgeler</span>
-                            </a>
-                            <a class="nav-link nav-level-2 @(IsActive("BankaHesabi") ? "active" : "")" asp-controller="BankaHesabi" asp-action="Index">
-                                <svg><use href="#icon-bank"></use></svg>
-                                <span>Banka Hesapları</span>
-                            </a>
-                            <a class="nav-link nav-level-2 @(IsActive("OdemeGrubu") ? "active" : "")" asp-controller="OdemeGrubu" asp-action="Index">
-                                <svg><use href="#icon-wallet"></use></svg>
-                                <span>Ödeme Grupları</span>
-                            </a>
-
-                            <button class="nav-sublink-toggle nav-level-2 @(aracParametreleriOpen ? "active" : "")" type="button" data-toggle-target="navAracParametreleri" aria-expanded="@(aracParametreleriOpen ? "true" : "false")">
-                                <span>Araç Parametreleri</span>
-                                <svg class="chevron"><use href="#icon-chevron"></use></svg>
-                            </button>
-                            <div class="collapse-panel nav-sub @(aracParametreleriOpen ? "open" : "")" id="navAracParametreleri">
-                                <a class="nav-link nav-level-3 @(IsActive("AracCinsi") ? "active" : "")" asp-controller="AracCinsi" asp-action="Index">
-                                    <svg><use href="#icon-list"></use></svg>
-                                    <span>Araç Cinsleri</span>
-                                </a>
-                                <a class="nav-link nav-level-3 @(IsActive("AracMarka") ? "active" : "")" asp-controller="AracMarka" asp-action="Index">
-                                    <svg><use href="#icon-car"></use></svg>
-                                    <span>Araç Markaları</span>
-                                </a>
-                                <a class="nav-link nav-level-3 @(IsActive("AracTipi") ? "active" : "")" asp-controller="AracTipi" asp-action="Index">
-                                    <svg><use href="#icon-settings"></use></svg>
-                                    <span>Araç Tipleri</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="nav-group">
                         <button class="nav-section-toggle" type="button" data-toggle-target="navCari" aria-expanded="@(cariOpen ? "true" : "false")">
                             <span>Cari Listeler</span>
                             <svg class="chevron"><use href="#icon-chevron"></use></svg>
@@ -112,6 +84,10 @@
                                 <a class="nav-link nav-level-3 @(IsActive("Firma") ? "active" : "")" asp-controller="Firma" asp-action="Index">
                                     <svg><use href="#icon-building"></use></svg>
                                     <span>Firma Listesi</span>
+                                </a>
+                                <a class="nav-link nav-level-3 @(IsActive("Firma") ? "active" : "")" asp-controller="Firma" asp-action="Index">
+                                    <svg><use href="#icon-hareket"></use></svg>
+                                    <span>Firma Araç Hareketleri</span>
                                 </a>
                                 <a class="nav-link nav-level-3 @(IsActive("GrupFirma") ? "active" : "")" asp-controller="GrupFirma" asp-action="Index">
                                     <svg><use href="#icon-group"></use></svg>
@@ -135,6 +111,56 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="nav-group">
+                        <button class="nav-section-toggle" type="button" data-toggle-target="navTanimlar" aria-expanded="@(tanimlarOpen ? "true" : "false")">
+                            <span>Tanımlar</span>
+                            <svg class="chevron"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="collapse-panel @(tanimlarOpen ? "open" : "")" id="navTanimlar">
+                            <a class="nav-link nav-level-2 @(IsActive("Bolge") ? "active" : "")" asp-controller="Bolge" asp-action="Index">
+                                <svg><use href="#icon-map"></use></svg>
+                                <span>Bölgeler</span>
+                            </a>
+                            <a class="nav-link nav-level-2 @(IsActive("BankaHesabi") ? "active" : "")" asp-controller="BankaHesabi" asp-action="Index">
+                                <svg><use href="#icon-bank"></use></svg>
+                                <span>Banka Hesapları</span>
+                            </a>
+                            <a class="nav-link nav-level-2 @(IsActive("OdemeGrubu") ? "active" : "")" asp-controller="OdemeGrubu" asp-action="Index">
+                                <svg><use href="#icon-wallet"></use></svg>
+                                <span>Ödeme Grupları</span>
+                            </a>
+
+                            <a class="nav-link nav-level-2 @(IsActive("YakitIstasyonu") ? "active" : "")" asp-controller="YakitIstasyonu" asp-action="Index">
+                                <svg><use href="#icon-fuel"></use></svg>
+                                <span>Yakıt İstasyonları</span>
+                            </a>
+
+                            <a class="nav-link nav-level-2 @(IsActive("OdemeTipi") ? "active" : "")" asp-controller="OdemeTipi" asp-action="Index">
+                                <svg><use href="#icon-card"></use></svg>
+                                <span>Ödeme Tipleri</span>
+                            </a>
+
+                            <button class="nav-sublink-toggle nav-level-2 @(aracParametreleriOpen ? "active" : "")" type="button" data-toggle-target="navAracParametreleri" aria-expanded="@(aracParametreleriOpen ? "true" : "false")">
+                                <span>Araç Parametreleri</span>
+                                <svg class="chevron"><use href="#icon-chevron"></use></svg>
+                            </button>
+                            <div class="collapse-panel nav-sub @(aracParametreleriOpen ? "open" : "")" id="navAracParametreleri">
+                                <a class="nav-link nav-level-3 @(IsActive("AracCinsi") ? "active" : "")" asp-controller="AracCinsi" asp-action="Index">
+                                    <svg><use href="#icon-list"></use></svg>
+                                    <span>Araç Cinsleri</span>
+                                </a>
+                                <a class="nav-link nav-level-3 @(IsActive("AracMarka") ? "active" : "")" asp-controller="AracMarka" asp-action="Index">
+                                    <svg><use href="#icon-car"></use></svg>
+                                    <span>Araç Markaları</span>
+                                </a>
+                                <a class="nav-link nav-level-3 @(IsActive("AracTipi") ? "active" : "")" asp-controller="AracTipi" asp-action="Index">
+                                    <svg><use href="#icon-settings"></use></svg>
+                                    <span>Araç Tipleri</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 }
 
                 @if (User.IsInRole("Admin"))
@@ -148,6 +174,10 @@
                             <a class="nav-link nav-level-2 @(IsActive("Users") ? "active" : "")" asp-controller="Users" asp-action="Index">
                                 <svg><use href="#icon-users"></use></svg>
                                 <span>Kullanıcılar</span>
+                            </a>
+                            <a class="nav-link nav-level-2 @(IsActive("Ayarlar") ? "active" : "")" asp-controller="Ayarlar" asp-action="Index">
+                                <svg><use href="#icon-settings"></use></svg>
+                                <span>Ayarlar</span>
                             </a>
                             <a class="nav-link nav-level-2 @(IsActive("Logs") ? "active" : "")" asp-controller="Logs" asp-action="Index">
                                 <svg><use href="#icon-log"></use></svg>

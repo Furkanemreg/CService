@@ -22,8 +22,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AracCinsi> AracCinsleri => Set<AracCinsi>();
     public DbSet<AracMarka> AracMarkalari => Set<AracMarka>();
     public DbSet<AracTipi> AracTipleri => Set<AracTipi>();
+    public DbSet<YakitIstasyonu> YakitIstasyonlari => Set<YakitIstasyonu>();
+    public DbSet<OdemeTipi> OdemeTipleri => Set<OdemeTipi>();
+
     #region GENERAL ENTITIES
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
+    public DbSet<GlobalSetting> GlobalSettings => Set<GlobalSetting>();
     public DbSet<VatRate> VatRates => Set<VatRate>();
     public DbSet<WitholdingRate> WitholdingRates => Set<WitholdingRate>();
     #endregion
@@ -115,6 +119,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(a => a.OdemeGrubu)
             .WithMany()
             .HasForeignKey(a => a.OdemeGrubuId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<AracSahibi>()
+            .HasOne(a => a.OdemeTipi)
+            .WithMany()
+            .HasForeignKey(a => a.OdemeTipiId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Arac>()

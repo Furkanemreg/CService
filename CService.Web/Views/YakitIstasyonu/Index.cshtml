@@ -1,0 +1,43 @@
+﻿@model List<CService.Core.Entities.YakitIstasyonu>
+@{
+    ViewData["Title"] = "Yakıt İstasyonları";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Yakıt İstasyonları</h2>
+    <a asp-action="Create" class="btn btn-success">
+        <svg class="btn-icon-inline"><use href="#icon-plus"></use></svg>
+        Yeni Yakıt İstasyonu
+    </a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>İstasyon Kodu</th>
+            <th>İstasyon Adı</th>
+            <th>Komisyon Oranı</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Kod</td>
+                <td>@item.Ad</td>
+                <td>%@item.Komisyon</td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary btn-icon">
+                        <svg><use href="#icon-edit"></use></svg> Düzenle
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger btn-icon">
+                            <svg><use href="#icon-trash"></use></svg> Sil
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

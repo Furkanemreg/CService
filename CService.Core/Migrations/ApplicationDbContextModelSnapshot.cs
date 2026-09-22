@@ -390,7 +390,7 @@ namespace CService.Core.Migrations
                     b.Property<int?>("OdemeGrubuId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("OdemeTipi")
+                    b.Property<int>("OdemeTipiId")
                         .HasColumnType("integer");
 
                     b.Property<decimal?>("OkulKomisyonu")
@@ -439,6 +439,8 @@ namespace CService.Core.Migrations
                     b.HasIndex("BankaHesabiId");
 
                     b.HasIndex("OdemeGrubuId");
+
+                    b.HasIndex("OdemeTipiId");
 
                     b.ToTable("AracSahipleri");
                 });
@@ -763,6 +765,44 @@ namespace CService.Core.Migrations
                     b.ToTable("WitholdingRates");
                 });
 
+            modelBuilder.Entity("CService.Core.Entities.GlobalSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OpeningPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GlobalSettings");
+                });
+
             modelBuilder.Entity("CService.Core.Entities.GrupFirma", b =>
                 {
                     b.Property<int>("Id")
@@ -904,6 +944,96 @@ namespace CService.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OdemeGruplari");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.OdemeTipi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Kdv")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OdemeTipleri");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.YakitIstasyonu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Komisyon")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("YakitIstasyonlari");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1093,9 +1223,17 @@ namespace CService.Core.Migrations
                         .HasForeignKey("OdemeGrubuId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("CService.Core.Entities.OdemeTipi", "OdemeTipi")
+                        .WithMany()
+                        .HasForeignKey("OdemeTipiId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("BankaHesabi");
 
                     b.Navigation("OdemeGrubu");
+
+                    b.Navigation("OdemeTipi");
                 });
 
             modelBuilder.Entity("CService.Core.Entities.Firma", b =>

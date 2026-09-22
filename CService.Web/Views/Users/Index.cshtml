@@ -7,7 +7,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Kullanıcılar</h2>
-    <a asp-action="Create" class="btn btn-primary">Yeni Kullanıcı</a>
+    <a asp-action="Create" class="btn btn-success">
+        <svg class="btn-icon-inline"><use href="#icon-plus"></use></svg>
+        Yeni Kullanıcı
+    </a>
 </div>
 
 @if (TempData["Error"] is string error)
@@ -53,15 +56,23 @@
                 </td>
                 <td>@(user.IsLocked ? "Kısıtlı" : "Aktif")</td>
                 <td class="text-end">
-                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-secondary">Düzenle</a>
-                    <a asp-action="ChangePassword" asp-route-id="@user.Id" class="btn btn-sm btn-outline-secondary">Şifre Değiştir</a>
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary btn-icon">
+                        <svg><use href="#icon-edit"></use></svg> Düzenle
+                    </a>
+                    <a asp-action="ChangePassword" asp-route-id="@user.Id" class="btn btn-sm btn-outline-indigo btn-icon">
+                        <svg><use href="#icon-key"></use></svg> Şifre Değiştir
+                    </a>
                     @if (!isSelf)
                     {
                         <form asp-action="ToggleLock" asp-route-id="@user.Id" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-outline-warning">@(user.IsLocked ? "Aktifleştir" : "Kısıtla")</button>
+                            <button type="submit" class="btn btn-sm btn-outline-warning btn-icon">
+                                <svg><use href="#@(user.IsLocked ? "icon-unlock" : "icon-lock")"></use></svg> @(user.IsLocked ? "Aktifleştir" : "Kısıtla")
+                            </button>
                         </form>
                         <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Bu kullanıcıyı silmek istediğine emin misin? Geçmiş kayıtları korunur.');">
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger btn-icon">
+                                <svg><use href="#icon-trash"></use></svg> Sil
+                            </button>
                         </form>
                     }
                 </td>

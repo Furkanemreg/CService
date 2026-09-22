@@ -12,8 +12,11 @@ HostingConfig.ConfigurePipeline(app);
 using (var scope = app.Services.CreateScope())
 {
     await IdentitySeeder.SeedAsync(scope.ServiceProvider);
-    await VatRateSeeder.SeedAsync(scope.ServiceProvider);
+    await GlobalSettingSeeder.SeedAsync(scope.ServiceProvider, builder.Configuration);
     await VehicleParameterSeeder.SeedAsync(scope.ServiceProvider);
+    await OdemeTipiSeeder.SeedAsync(scope.ServiceProvider);
+    await VatRateSeeder.SeedAsync(scope.ServiceProvider);
+    await WitholdingRateSeeder.SeedAsync(scope.ServiceProvider);
 }
 
 app.Run();

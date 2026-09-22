@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using CService.Core.Data;
 using CService.Core.Data.Seeders;
@@ -38,8 +39,11 @@ public partial class App : Application
         using (var scope = _webApp.Services.CreateScope())
         {
             await IdentitySeeder.SeedAsync(scope.ServiceProvider);
-            await VatRateSeeder.SeedAsync(scope.ServiceProvider);
+            await GlobalSettingSeeder.SeedAsync(scope.ServiceProvider, builder.Configuration);
             await VehicleParameterSeeder.SeedAsync(scope.ServiceProvider);
+            await OdemeTipiSeeder.SeedAsync(scope.ServiceProvider);
+            await VatRateSeeder.SeedAsync(scope.ServiceProvider);
+            await WitholdingRateSeeder.SeedAsync(scope.ServiceProvider);
         }
 
         await _webApp.StartAsync();

@@ -32,7 +32,9 @@ public class AracSahibi : BaseEntity
     public int? OdemeGrubuId { get; set; }
     public OdemeGrubu? OdemeGrubu { get; set; }
 
-    public enmOdemeTipi OdemeTipi { get; set; }
+    public int OdemeTipiId { get; set; }
+    public OdemeTipi? OdemeTipi { get; set; }
+
     public enmVergiUsulu VergiUsulu { get; set; }
 
     public int? BankaHesabiId { get; set; }
