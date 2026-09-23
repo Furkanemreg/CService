@@ -43,7 +43,6 @@ public class FirmaController : Controller
 
     private async Task PopulateDropdownsAsync()
     {
-        ViewBag.Bolgeler = new SelectList(await _bolgeService.GetAllAsync(), nameof(Bolge.Id), nameof(Bolge.Ad));
         ViewBag.GrupFirmalar = new SelectList(await _grupFirmaService.GetAllAsync(), nameof(GrupFirma.Id), nameof(GrupFirma.Adi));
 
         var vatRates = (await _vatRateService.GetAllAsync()).OrderBy(x => x.Rate).ToList();
@@ -52,8 +51,6 @@ public class FirmaController : Controller
         var tevkifatRates = (await _tevkifatRateService.GetAllAsync()).OrderBy(x => x.Code).ToList();
         ViewBag.TevkifatRates = new SelectList(tevkifatRates, nameof(WitholdingRate.Id), nameof(WitholdingRate.Display));
 
-        ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
-
         ViewBag.OkulOdemeTipleri = Enum.GetValues<enmOkulOdemeTpi>()
             .Select(v => new SelectListItem
             {
@@ -61,6 +58,27 @@ public class FirmaController : Controller
                 Text = EnumHelper.GetEnumDescription(v)
             })
             .ToList();
+    }
+
+    private async Task PopulateSelectedDisplaysAsync(Firma model)
+    {
+        if (model.BolgeId is int bolgeId)
+        {
+            var bolge = await _bolgeService.GetByIdAsync(bolgeId);
+            ViewBag.BolgeDisplay = bolge is null ? null : $"{bolge.Kod} - {bolge.Ad}";
+        }
+
+        if (model.HavaleBankaHesabiId is int havaleId)
+        {
+            var havale = await _bankaHesabiService.GetByIdAsync(havaleId);
+            ViewBag.HavaleBankaHesabiDisplay = havale is null ? null : havale.BankaAdi + (havale.SubeAdi != null ? " - " + havale.SubeAdi : "");
+        }
+
+        if (model.KrediKartiBankaHesabiId is int kkId)
+        {
+            var kk = await _bankaHesabiService.GetByIdAsync(kkId);
+            ViewBag.KrediKartiBankaHesabiDisplay = kk is null ? null : kk.BankaAdi + (kk.SubeAdi != null ? " - " + kk.SubeAdi : "");
+        }
     }
 
     public async Task<IActionResult> Index()
@@ -101,6 +119,7 @@ public class FirmaController : Controller
         if (item is null) return NotFound();
 
         await PopulateDropdownsAsync();
+        await PopulateSelectedDisplaysAsync(item);
         return View(item);
     }
 
@@ -156,16 +175,23 @@ public class FirmaController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetVehicles(int firmaId)
+    public async Task<IActionResult> GetVehicles(int firmaId, string? q)
     {
-        var items = await _aracService.Query()
+        IQueryable<Arac> query = _aracService.Query()
             .Where(a => a.FirmaId == firmaId)
             .Include(a => a.AracSahibi)
             .Include(a => a.AracCinsi)
             .Include(a => a.AracTipi)
-            .Include(a => a.AracMarka)
-            .ToListAsync();
+            .Include(a => a.AracMarka);
 
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            var term = q.ToLower();
+            query = query.Where(a => a.Plaka.ToLower().Contains(term)
+                || (a.AracSahibi != null && (a.AracSahibi.Adi.ToLower().Contains(term) || a.AracSahibi.Soyad.ToLower().Contains(term))));
+        }
+
+        var items = await query.ToListAsync();
         return PartialView("_VehiclesPartial", items);
     }
 }

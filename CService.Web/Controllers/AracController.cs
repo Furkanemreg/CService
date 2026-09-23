@@ -44,9 +44,21 @@ public class AracController : Controller
         ViewBag.Cinsler = new SelectList(await _cinsiService.GetAllAsync(), nameof(AracCinsi.Id), nameof(AracCinsi.Ad));
         ViewBag.Markalar = new SelectList(await _markaService.GetAllAsync(), nameof(AracMarka.Id), nameof(AracMarka.Ad));
         ViewBag.Tipler = new SelectList(await _tipiService.GetAllAsync(), nameof(AracTipi.Id), nameof(AracTipi.Ad));
+    }
 
-        ViewBag.AracSahipleri = new SelectList(await _aracSahibiService.GetAllAsync(), nameof(AracSahibi.Id), nameof(AracSahibi.TamAdi));
-        ViewBag.Firmalar = new SelectList(await _firmaService.GetAllAsync(), nameof(Firma.Id), nameof(Firma.Adi));
+    private async Task PopulateSelectedDisplaysAsync(int? firmaId, int? aracSahibiId)
+    {
+        if (firmaId is int fid)
+        {
+            var firma = await _firmaService.GetByIdAsync(fid);
+            ViewBag.FirmaDisplay = firma is null ? null : $"{firma.FirmaKodu} - {firma.Adi}";
+        }
+
+        if (aracSahibiId is int said)
+        {
+            var sahip = await _aracSahibiService.GetByIdAsync(said);
+            ViewBag.AracSahibiDisplay = sahip is null ? null : $"{sahip.Kod} - {sahip.Adi} {sahip.Soyad}";
+        }
     }
 
     public async Task<IActionResult> Index()
@@ -143,6 +155,7 @@ public class AracController : Controller
         if (item is null) return NotFound();
 
         await PopulateDropdownsAsync();
+        await PopulateSelectedDisplaysAsync(item.FirmaId, item.AracSahibiId);
         return View(item);
     }
 

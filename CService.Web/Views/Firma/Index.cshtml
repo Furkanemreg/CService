@@ -1,6 +1,6 @@
 ﻿@model List<CService.Core.Entities.Firma>
 @{
-    ViewData["Title"] = "Firmalar";
+    ViewData["Title"] = "Firmalar > Firma Listesi";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -82,8 +82,16 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
             </div>
-            <div class="modal-body" id="araclarModalBody">
-                <p class="text-muted mb-0">Yükleniyor...</p>
+            <div class="modal-body">
+                <div class="search-select mb-3">
+                    <input type="text" class="form-control search-select-input" id="araclarModalSearch" placeholder="Plaka veya araç sahibi giriniz..." autocomplete="off" />
+                    <span class="search-select-icon">
+                        <svg><use href="#icon-search"></use></svg>
+                    </span>
+                </div>
+                <div id="araclarModalResults">
+                    <p class="text-muted mb-0">Yükleniyor...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -93,20 +101,37 @@
     <script>
         const araclarModalEl = document.getElementById('araclarModal');
         const araclarModal = new bootstrap.Modal(araclarModalEl);
+        const araclarModalSearch = document.getElementById('araclarModalSearch');
+        const araclarModalResults = document.getElementById('araclarModalResults');
+        let currentFirmaId = null;
+        let searchTimer = null;
+
+        async function loadVehicles(firmaId, q) {
+            araclarModalResults.innerHTML = '<p class="text-muted mb-0">Yükleniyor...</p>';
+
+            const url = '/Firma/GetVehicles?firmaId=' + firmaId + (q ? '&q=' + encodeURIComponent(q) : '');
+            const response = await fetch(url);
+            araclarModalResults.innerHTML = response.ok
+                ? await response.text()
+                : '<p class="text-danger mb-0">Araçlar yüklenemedi.</p>';
+        }
 
         document.querySelectorAll('[data-firma-araclar]').forEach(function (btn) {
-            btn.addEventListener('click', async function () {
-                const firmaId = btn.getAttribute('data-firma-araclar');
+            btn.addEventListener('click', function () {
+                currentFirmaId = btn.getAttribute('data-firma-araclar');
                 const firmaAdi = btn.getAttribute('data-firma-adi');
                 document.getElementById('araclarModalTitleText').textContent = firmaAdi + ' - Araçlar';
-                document.getElementById('araclarModalBody').innerHTML = '<p class="text-muted mb-0">Yükleniyor...</p>';
+                araclarModalSearch.value = '';
                 araclarModal.show();
-
-                const response = await fetch('/Firma/GetVehicles?firmaId=' + firmaId);
-                document.getElementById('araclarModalBody').innerHTML = response.ok
-                    ? await response.text()
-                    : '<p class="text-danger mb-0">Araçlar yüklenemedi.</p>';
+                loadVehicles(currentFirmaId, '');
             });
+        });
+
+        araclarModalSearch.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function () {
+                if (currentFirmaId) loadVehicles(currentFirmaId, araclarModalSearch.value.trim());
+            }, 250);
         });
     </script>
 }

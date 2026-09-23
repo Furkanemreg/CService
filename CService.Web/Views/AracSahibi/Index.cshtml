@@ -1,6 +1,6 @@
 ﻿@model List<CService.Core.Entities.AracSahibi>
 @{
-    ViewData["Title"] = "Araç Sahipleri";
+    ViewData["Title"] = "Araçlar > Araç Sahipleri";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -58,8 +58,16 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
             </div>
-            <div class="modal-body" id="araclarModalBody">
-                <p class="text-muted mb-0">Yükleniyor...</p>
+            <div class="modal-body">
+                <div class="search-select mb-3">
+                    <input type="text" class="form-control search-select-input" id="araclarModalSearch" placeholder="Plaka veya firma adı giriniz..." autocomplete="off" />
+                    <span class="search-select-icon">
+                        <svg><use href="#icon-search"></use></svg>
+                    </span>
+                </div>
+                <div id="araclarModalResults">
+                    <p class="text-muted mb-0">Yükleniyor...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -69,20 +77,37 @@
     <script>
         const araclarModalEl = document.getElementById('araclarModal');
         const araclarModal = new bootstrap.Modal(araclarModalEl);
+        const araclarModalSearch = document.getElementById('araclarModalSearch');
+        const araclarModalResults = document.getElementById('araclarModalResults');
+        let currentAracSahibiId = null;
+        let searchTimer = null;
+
+        async function loadVehicles(aracSahibiId, q) {
+            araclarModalResults.innerHTML = '<p class="text-muted mb-0">Yükleniyor...</p>';
+
+            const url = '/AracSahibi/GetVehicles?aracSahibiId=' + aracSahibiId + (q ? '&q=' + encodeURIComponent(q) : '');
+            const response = await fetch(url);
+            araclarModalResults.innerHTML = response.ok
+                ? await response.text()
+                : '<p class="text-danger mb-0">Araçlar yüklenemedi.</p>';
+        }
 
         document.querySelectorAll('[data-sahibi-araclar]').forEach(function (btn) {
-            btn.addEventListener('click', async function () {
-                const aracSahibiId = btn.getAttribute('data-sahibi-araclar');
+            btn.addEventListener('click', function () {
+                currentAracSahibiId = btn.getAttribute('data-sahibi-araclar');
                 const sahibiAdi = btn.getAttribute('data-sahibi-adi');
                 document.getElementById('araclarModalTitleText').textContent = sahibiAdi + ' - Araçlar';
-                document.getElementById('araclarModalBody').innerHTML = '<p class="text-muted mb-0">Yükleniyor...</p>';
+                araclarModalSearch.value = '';
                 araclarModal.show();
-
-                const response = await fetch('/AracSahibi/GetVehicles?aracSahibiId=' + aracSahibiId);
-                document.getElementById('araclarModalBody').innerHTML = response.ok
-                    ? await response.text()
-                    : '<p class="text-danger mb-0">Araçlar yüklenemedi.</p>';
+                loadVehicles(currentAracSahibiId, '');
             });
+        });
+
+        araclarModalSearch.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function () {
+                if (currentAracSahibiId) loadVehicles(currentAracSahibiId, araclarModalSearch.value.trim());
+            }, 250);
         });
     </script>
 }

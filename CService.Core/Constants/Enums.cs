@@ -24,18 +24,6 @@ public enum enmOkulOdemeTpi
     AylikSozlesme = 3
 }
 
-//public enum enmOdemeTipi
-//{
-//    [Description("Elden Ödeme")]
-//    EldenOdeme = 1,
-
-//    [Description("Banka Havalesi")]
-//    BankaHavalesi = 2,
-
-//    [Description("Ödeme Yapma")]
-//    OdemeYapma = 3
-//}
-
 public enum enmKdvDurumu
 {
     [Description("KDV'yi Etkilemez")]
@@ -60,4 +48,13 @@ public enum enmOdemeDurumu
 
     [Description("Kapalı")]
     Kapali = 2
+}
+
+public enum enmVardiyaTipi
+{
+    [Description("GİRİŞ")]
+    Giris = 1,
+
+    [Description("ÇIKIŞ")]
+    Cikis = 2
 }

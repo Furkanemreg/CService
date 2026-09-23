@@ -24,6 +24,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AracTipi> AracTipleri => Set<AracTipi>();
     public DbSet<YakitIstasyonu> YakitIstasyonlari => Set<YakitIstasyonu>();
     public DbSet<OdemeTipi> OdemeTipleri => Set<OdemeTipi>();
+    public DbSet<Yetkili> Yetkililer => Set<Yetkili>();
+    public DbSet<Hostes> Hosteler => Set<Hostes>();
+    public DbSet<Vardiya> Vardiyalar => Set<Vardiya>();
+    public DbSet<Guzergah> Guzergahlar => Set<Guzergah>();
 
     #region GENERAL ENTITIES
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
@@ -142,6 +146,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Arac>().HasOne(a => a.AracCinsi).WithMany().HasForeignKey(a => a.AracCinsiId).OnDelete(DeleteBehavior.Restrict);
         builder.Entity<Arac>().HasOne(a => a.AracMarka).WithMany().HasForeignKey(a => a.AracMarkaId).OnDelete(DeleteBehavior.Restrict);
         builder.Entity<Arac>().HasOne(a => a.AracTipi).WithMany().HasForeignKey(a => a.AracTipiId).OnDelete(DeleteBehavior.Restrict);
+        #endregion
+
+        #region GÜZERGAH
+        builder.Entity<Guzergah>().HasOne(g => g.Firma).WithMany().HasForeignKey(g => g.FirmaId).OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Guzergah>().HasOne(g => g.Bolge).WithMany().HasForeignKey(g => g.BolgeId).OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Guzergah>().HasOne(g => g.Yetkili).WithMany().HasForeignKey(g => g.YetkiliId).OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Guzergah>().HasOne(g => g.Hostes).WithMany().HasForeignKey(g => g.HostesId).OnDelete(DeleteBehavior.Restrict);
         #endregion
 
         foreach (var entityType in builder.Model.GetEntityTypes())

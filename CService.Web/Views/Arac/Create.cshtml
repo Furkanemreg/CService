@@ -1,7 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using CService.Web.Models.Shared
 @model CService.Web.Models.Araclar.AracCreateViewModel
 @{
-    ViewData["Title"] = "Yeni Araç";
+    ViewData["Title"] = "Araçlar > Araç Listesi > Yeni";
+    
+    var firmaSearch = new SearchSelectViewModel
+    {
+        HiddenName = nameof(Model.FirmaId),
+        SearchUrl = Url.Action("SearchFirma", "Shared"),
+        Placeholder = "Firma ara (ad veya kod)..."
+    };
+
+    var aracSahibiSearch = new SearchSelectViewModel
+    {
+        HiddenName = nameof(Model.ExistingAracSahibiId),
+        SearchUrl = Url.Action("SearchAracSahibi", "Shared"),
+        Placeholder = "Araç sahibi ara (ad veya kod)..."
+    };
 }
 
 <h2 class="mb-4">Yeni Araç</h2>
@@ -11,9 +26,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Firma *</label>
-            <select asp-for="FirmaId" class="form-select" asp-items="@(ViewBag.Firmalar as SelectList)" required>
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="firmaSearch" />
             <span asp-validation-for="FirmaId" class="text-danger"></span>
         </div>
     </div>
@@ -32,9 +45,7 @@
 
     <div id="existingOwnerBlock" class="row">
         <div class="col-md-6 mb-3">
-            <select asp-for="ExistingAracSahibiId" class="form-select" asp-items="@(ViewBag.AracSahipleri as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="aracSahibiSearch" />
         </div>
     </div>
 

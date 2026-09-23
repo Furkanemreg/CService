@@ -35,14 +35,30 @@ public class AracSahibiController : Controller
 
     private async Task PopulateDropdownsAsync()
     {
-        ViewBag.OdemeTipleri = new SelectList(await _odemeTipiService.GetAllAsync(), nameof(OdemeTipi.Id), nameof(OdemeTipi.Ad));
-
         ViewBag.VergiUsulleri = Enum.GetValues<enmVergiUsulu>()
             .Select(v => new SelectListItem { Value = ((int)v).ToString(), Text = EnumHelper.GetEnumDescription(v) })
             .ToList();
+    }
 
-        ViewBag.BankaHesaplari = new SelectList(await _bankaHesabiService.GetAllAsync(), nameof(BankaHesabi.Id), nameof(BankaHesabi.BankaAdi));
-        ViewBag.OdemeGruplari = new SelectList(await _odemeGrubuService.GetAllAsync(), nameof(OdemeGrubu.Id), nameof(OdemeGrubu.Ad));
+    private async Task PopulateSelectedDisplaysAsync(AracSahibi model)
+    {
+        if (model.OdemeTipiId is int odemeTipiId)
+        {
+            var odemeTipi = await _odemeTipiService.GetByIdAsync(odemeTipiId);
+            ViewBag.OdemeTipiDisplay = odemeTipi is null ? null : $"{odemeTipi.Kod} - {odemeTipi.Ad}";
+        }
+
+        if (model.BankaHesabiId is int bankaHesabiId)
+        {
+            var banka = await _bankaHesabiService.GetByIdAsync(bankaHesabiId);
+            ViewBag.BankaHesabiDisplay = banka is null ? null : banka.BankaAdi + (banka.SubeAdi != null ? " - " + banka.SubeAdi : "");
+        }
+
+        if (model.OdemeGrubuId is int odemeGrubuId)
+        {
+            var odemeGrubu = await _odemeGrubuService.GetByIdAsync(odemeGrubuId);
+            ViewBag.OdemeGrubuDisplay = odemeGrubu is null ? null : $"{odemeGrubu.Kod} - {odemeGrubu.Ad}";
+        }
     }
 
     public async Task<IActionResult> Index() => View(await _baseService.GetAllAsync());
@@ -75,6 +91,7 @@ public class AracSahibiController : Controller
         if (item is null) return NotFound();
 
         await PopulateDropdownsAsync();
+        await PopulateSelectedDisplaysAsync(item);
         return View(item);
     }
 
@@ -129,16 +146,22 @@ public class AracSahibiController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetVehicles(int aracSahibiId)
+    public async Task<IActionResult> GetVehicles(int aracSahibiId, string? q)
     {
-        var items = await _aracService.Query()
+        IQueryable<Arac> query = _aracService.Query()
             .Where(a => a.AracSahibiId == aracSahibiId)
             .Include(a => a.Firma)
             .Include(a => a.AracCinsi)
             .Include(a => a.AracTipi)
-            .Include(a => a.AracMarka)
-            .ToListAsync();
+            .Include(a => a.AracMarka);
 
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            var term = q.ToLower();
+            query = query.Where(a => a.Plaka.ToLower().Contains(term) || (a.Firma != null && a.Firma.Adi.ToLower().Contains(term)));
+        }
+
+        var items = await query.ToListAsync();
         return PartialView("_VehiclesPartial", items);
     }
 }

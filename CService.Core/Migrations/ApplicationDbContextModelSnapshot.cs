@@ -904,6 +904,134 @@ namespace CService.Core.Migrations
                     b.ToTable("GrupFirmalar");
                 });
 
+            modelBuilder.Entity("CService.Core.Entities.Guzergah", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Aciklama")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Ay")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("BolgeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FirmaId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("HostesId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("Kapasite")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("KmTekYon")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Kod2")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SeferSayisi")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ServisIstikameti")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("YetkiliId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Yil")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BolgeId");
+
+                    b.HasIndex("FirmaId");
+
+                    b.HasIndex("HostesId");
+
+                    b.HasIndex("YetkiliId");
+
+                    b.ToTable("Guzergahlar");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.Hostes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdSoyad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hosteler");
+                });
+
             modelBuilder.Entity("CService.Core.Entities.OdemeGrubu", b =>
                 {
                     b.Property<int>("Id")
@@ -991,6 +1119,54 @@ namespace CService.Core.Migrations
                     b.ToTable("OdemeTipleri");
                 });
 
+            modelBuilder.Entity("CService.Core.Entities.Vardiya", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adi")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<TimeOnly>("Saat")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<int>("Tip")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vardiyalar");
+                });
+
             modelBuilder.Entity("CService.Core.Entities.YakitIstasyonu", b =>
                 {
                     b.Property<int>("Id")
@@ -1034,6 +1210,48 @@ namespace CService.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("YakitIstasyonlari");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.Yetkili", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdSoyad")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Kod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Yetkililer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1319,6 +1537,38 @@ namespace CService.Core.Migrations
                     b.Navigation("VatRate");
 
                     b.Navigation("WitholdingRate");
+                });
+
+            modelBuilder.Entity("CService.Core.Entities.Guzergah", b =>
+                {
+                    b.HasOne("CService.Core.Entities.Bolge", "Bolge")
+                        .WithMany()
+                        .HasForeignKey("BolgeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CService.Core.Entities.Firma", "Firma")
+                        .WithMany()
+                        .HasForeignKey("FirmaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CService.Core.Entities.Hostes", "Hostes")
+                        .WithMany()
+                        .HasForeignKey("HostesId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CService.Core.Entities.Yetkili", "Yetkili")
+                        .WithMany()
+                        .HasForeignKey("YetkiliId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Bolge");
+
+                    b.Navigation("Firma");
+
+                    b.Navigation("Hostes");
+
+                    b.Navigation("Yetkili");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

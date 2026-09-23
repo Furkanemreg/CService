@@ -1,0 +1,10 @@
+﻿@model CService.Web.Models.Shared.SearchSelectViewModel
+
+<div class="search-select" data-search-select data-search-url="@Model.SearchUrl">
+    <input type="hidden" class="search-select-hidden" name="@Model.HiddenName" value="@Model.SelectedId" />
+    <input type="text" class="form-control search-select-input" placeholder="@Model.Placeholder" autocomplete="off" value="@Model.SelectedText" />
+    <span class="search-select-icon">
+        <svg><use href="#icon-search"></use></svg>
+    </span>
+    <div class="search-select-results"></div>
+</div>

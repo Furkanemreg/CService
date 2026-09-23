@@ -1,0 +1,128 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using CService.Web.Models.Shared
+@model CService.Core.Entities.Guzergah
+@{
+    ViewData["Title"] = "Cari Listeler > Güzergahlar > Yeni";
+
+    var firmaSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.FirmaId),
+                SearchUrl = Url.Action("SearchFirma", "Shared"),
+                Placeholder = "Firma ara (ad veya kod)..."
+            };
+
+    var bolgeSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.BolgeId),
+                SearchUrl = Url.Action("SearchBolge", "Shared"),
+                Placeholder = "Bölge ara (ad veya kod)..."
+            };
+
+    var yetkiliSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.YetkiliId),
+                SearchUrl = Url.Action("SearchYetkili", "Shared"),
+                Placeholder = "Yetkili ara (ad veya kod)..."
+            };
+
+    var hostesSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.HostesId),
+                SearchUrl = Url.Action("SearchHostes", "Shared"),
+                Placeholder = "Hostes ara (ad veya kod)..."
+            };
+}
+
+<h2 class="mb-4">Yeni Güzergah</h2>
+<form asp-action="Create" method="post" class="col-md-7">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Firma *</label>
+        <partial name="_SearchSelect" model="firmaSearch" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Kod" class="form-label">Kod *</label>
+            <input asp-for="Kod" class="form-control" required />
+            <span asp-validation-for="Kod" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Kod2" class="form-label">Kod 2</label>
+            <input asp-for="Kod2" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Ad" class="form-label">Güzergah *</label>
+            <input asp-for="Ad" class="form-control" required />
+            <span asp-validation-for="Ad" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Bölge</label>
+        <partial name="_SearchSelect" model="bolgeSearch" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Yetkili</label>
+        <partial name="_SearchSelect" model="yetkiliSearch" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Ay" class="form-label">Ay</label>
+            <select asp-for="Ay" class="form-select">
+                <option value="1">Ocak</option>
+                <option value="2">Şubat</option>
+                <option value="3">Mart</option>
+                <option value="4">Nisan</option>
+                <option value="5">Mayıs</option>
+                <option value="6">Haziran</option>
+                <option value="7">Temmuz</option>
+                <option value="8">Ağustos</option>
+                <option value="9">Eylül</option>
+                <option value="10">Ekim</option>
+                <option value="11">Kasım</option>
+                <option value="12">Aralık</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Yil" class="form-label">Yıl</label>
+            <input asp-for="Yil" class="form-control" type="number" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label">Açıklama</label>
+        <input asp-for="Aciklama" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Hostes</label>
+        <partial name="_SearchSelect" model="hostesSearch" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Kapasite" class="form-label">Kapasite</label>
+            <input asp-for="Kapasite" class="form-control" type="number" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="KmTekYon" class="form-label">Km (Tek Yön)</label>
+            <input asp-for="KmTekYon" class="form-control" type="number" step="0.01" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="SeferSayisi" class="form-label">Sefer Sayısı</label>
+            <input asp-for="SeferSayisi" class="form-control" type="number" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ServisIstikameti" class="form-label">Servis İstikameti</label>
+        <textarea asp-for="ServisIstikameti" class="form-control" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>

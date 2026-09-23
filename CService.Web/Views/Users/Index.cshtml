@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims
 @model List<CService.Web.Models.Users.UserListItemViewModel>
 @{
-    ViewData["Title"] = "Kullanıcılar";
+    ViewData["Title"] = "Yönetim > Kullanıcılar";
     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 

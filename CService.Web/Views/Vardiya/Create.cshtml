@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model CService.Core.Entities.Vardiya
+@{
+    ViewData["Title"] = "Tanımlar > Vardiyalar > Yeni";
+}
+
+<h2 class="mb-4">Yeni Vardiya</h2>
+<form asp-action="Create" method="post" class="col-md-5">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Kod" class="form-label">Vardiya Kodu *</label>
+        <input asp-for="Kod" class="form-control" required />
+        <span asp-validation-for="Kod" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Adi" class="form-label">Vardiya Adı *</label>
+        <input asp-for="Adi" class="form-control" required />
+        <span asp-validation-for="Adi" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Tip" class="form-label">Vardiya Tipi</label>
+        <select asp-for="Tip" class="form-select" asp-items="@(ViewBag.Tipler as List<SelectListItem>)"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Saat" class="form-label">Saat</label>
+        <input asp-for="Saat" type="time" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <a asp-action="Index" class="btn btn-link">Vazgeç</a>
+</form>

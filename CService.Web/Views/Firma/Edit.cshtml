@@ -1,10 +1,38 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using CService.Web.Models.Shared
 @model CService.Core.Entities.Firma
 @{
-    ViewData["Title"] = "Firma Düzenle";
+    ViewData["Title"] = "Firmalar > Firma Listesi > Düzenle";
+
+    var bolgeSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.BolgeId),
+                SearchUrl = Url.Action("SearchBolge", "Shared"),
+                Placeholder = "Bölge ara (ad veya kod)...",
+                SelectedId = Model.BolgeId,
+                SelectedText = ViewBag.BolgeDisplay
+            };
+
+    var havaleSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.HavaleBankaHesabiId),
+                SearchUrl = Url.Action("SearchBankaHesabi", "Shared"),
+                Placeholder = "Banka hesabı ara...",
+                SelectedId = Model.HavaleBankaHesabiId,
+                SelectedText = ViewBag.HavaleBankaHesabiDisplay
+            };
+
+    var krediKartiSearch = new SearchSelectViewModel
+            {
+                HiddenName = nameof(Model.KrediKartiBankaHesabiId),
+                SearchUrl = Url.Action("SearchBankaHesabi", "Shared"),
+                Placeholder = "Banka hesabı ara...",
+                SelectedId = Model.KrediKartiBankaHesabiId,
+                SelectedText = ViewBag.KrediKartiBankaHesabiDisplay
+            };
 }
 
-<h2 class="mb-4">Firma Düzenle</h2>
+<h2 class="mb-4">Firma Cari Kartı</h2>
 <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
     <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -60,9 +88,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Bölge</label>
-            <select asp-for="BolgeId" class="form-select" asp-items="@(ViewBag.Bolgeler as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="bolgeSearch" />
             <span asp-validation-for="BolgeId" class="text-danger"></span>
         </div>
         <div class="col-md-4 mb-3">
@@ -77,16 +103,12 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Havale Banka Hesabı</label>
-            <select asp-for="HavaleBankaHesabiId" class="form-select" asp-items="@(ViewBag.BankaHesaplari as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="havaleSearch" />
             <span asp-validation-for="HavaleBankaHesabiId" class="text-danger"></span>
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Kredi Kartı Banka Hesabı</label>
-            <select asp-for="KrediKartiBankaHesabiId" class="form-select" asp-items="@(ViewBag.BankaHesaplari as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="krediKartiSearch" />
             <span asp-validation-for="KrediKartiBankaHesabiId" class="text-danger"></span>
         </div>
     </div>

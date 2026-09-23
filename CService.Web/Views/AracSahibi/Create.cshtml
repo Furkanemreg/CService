@@ -1,7 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using CService.Web.Models.Shared
+
 @model CService.Core.Entities.AracSahibi
 @{
-    ViewData["Title"] = "Yeni Araç Sahibi";
+    ViewData["Title"] = "Araçlar > Araç Sahipleri > Yeni";
+
+    var odemeTipiSearch = new SearchSelectViewModel
+    {
+        HiddenName = nameof(Model.OdemeTipiId),
+        SearchUrl = Url.Action("SearchOdemeTipi", "Shared"),
+        Placeholder = "Ödeme tipi ara (ad veya kod)..."
+    };
+
+    var bankaSearch = new SearchSelectViewModel
+    {
+        HiddenName = nameof(Model.BankaHesabiId),
+        SearchUrl = Url.Action("SearchBankaHesabi", "Shared"),
+        Placeholder = "Banka hesabı ara..."
+    };
+
+    var odemeGrubuSearch = new SearchSelectViewModel
+    {
+        HiddenName = nameof(Model.OdemeGrubuId),
+        SearchUrl = Url.Action("SearchOdemeGrubu", "Shared"),
+        Placeholder = "Ödeme grubu ara (ad veya kod)..."
+    };
 }
 
 <h2 class="mb-4">Yeni Araç Sahibi</h2>
@@ -69,9 +92,7 @@
     <div class="row">
         <div class="col-md-4 mb-3">
             <label class="form-label">Ödeme Tipi</label>
-            <select asp-for="OdemeTipiId" class="form-select" asp-items="@(ViewBag.OdemeTipleri as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="odemeTipiSearch" />
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Basit Usul / KDV</label>
@@ -79,18 +100,14 @@
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Banka</label>
-            <select asp-for="BankaHesabiId" class="form-select" asp-items="@(ViewBag.BankaHesaplari as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="bankaSearch" />
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-4 mb-3">
             <label class="form-label">Ödeme Grubu</label>
-            <select asp-for="OdemeGrubuId" class="form-select" asp-items="@(ViewBag.OdemeGruplari as SelectList)">
-                <option value="">Seçiniz</option>
-            </select>
+            <partial name="_SearchSelect" model="odemeGrubuSearch" />
         </div>
     </div>
 
