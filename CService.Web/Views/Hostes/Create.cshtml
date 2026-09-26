@@ -6,6 +6,7 @@
 <h2 class="mb-4">Yeni Hostes</h2>
 <form asp-action="Create" method="post" class="col-md-5">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
     <div class="mb-3">
         <label asp-for="Kod" class="form-label">Kod *</label>
         <input asp-for="Kod" class="form-control" required />
@@ -16,6 +17,25 @@
         <input asp-for="AdSoyad" class="form-control" required />
         <span asp-validation-for="AdSoyad" class="text-danger"></span>
     </div>
+
+    <div class="mb-3">
+        <label asp-for="TcKimlikNo" class="form-label">TC Kimlik No</label>
+        <input asp-for="TcKimlikNo" class="form-control" maxlength="11" />
+        <span asp-validation-for="TcKimlikNo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">E-Posta</label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Tel" class="form-label">Telefon Numarası</label>
+        <input asp-for="Tel" class="form-control" />
+        <span asp-validation-for="Tel" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Oluştur</button>
     <a asp-action="Index" class="btn btn-link">Vazgeç</a>
 </form>

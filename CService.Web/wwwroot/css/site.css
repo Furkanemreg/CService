@@ -40,13 +40,6 @@ body {
     transition: transform 0.2s ease;
 }
 
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    padding: 1.25rem 1.25rem;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-}
 
 .brand-mark {
     display: inline-flex;
@@ -306,6 +299,28 @@ body {
     min-height: 100vh;
 }
 
+.content {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.app-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+.app-footer-sep {
+    color: #cbd5e1;
+}
+
 .topbar {
     display: flex;
     align-items: center;
@@ -340,11 +355,6 @@ body {
     height: 2px;
     background-color: #1e293b;
     border-radius: 2px;
-}
-
-.content {
-    flex: 1 1 auto;
-    padding: 1.5rem;
 }
 
 .toggle-switch .form-check-input {
@@ -621,6 +631,30 @@ body {
 .search-select-icon svg {
     width: 16px;
     height: 16px;
+}
+
+.sidebar-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+    padding: .5rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.brand-logo {
+    width: 90px;
+    height: 63px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
+    opacity: 0.75;
+}
+.brand-text {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.25em;
 }
 
 @media (max-width: 991.98px) {

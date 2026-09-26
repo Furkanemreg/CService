@@ -48,6 +48,10 @@ public class HostesController : Controller
 
         existing.Kod = model.Kod;
         existing.AdSoyad = model.AdSoyad;
+        existing.TcKimlikNo = model.TcKimlikNo;
+        existing.Email = model.Email;
+        existing.Tel = model.Tel;
+
         await _service.UpdateAsync(existing);
         return RedirectToAction(nameof(Index));
     }

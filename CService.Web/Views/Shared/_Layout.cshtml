@@ -61,8 +61,8 @@
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
-                <span class="brand-mark">CS</span>
-                <span class="brand-text">CService</span>
+                <img src="~/img/logo.png" alt="CService" class="brand-logo" />
+                @* <span class="brand-text">CService</span> *@
             </div>
 
             <nav class="sidebar-nav">
@@ -125,13 +125,13 @@
                                 <svg><use href="#icon-clock"></use></svg>
                                 <span>Vardiyalar</span>
                             </a>
-                            <a class="nav-link nav-level-2 @(IsActive("Bolge") ? "active" : "")" asp-controller="Bolge" asp-action="Index">
-                                <svg><use href="#icon-map"></use></svg>
-                                <span>Bölgeler</span>
-                            </a>
                             <a class="nav-link nav-level-2 @(IsActive("Guzergah") ? "active" : "")" asp-controller="Guzergah" asp-action="Index">
                                 <svg><use href="#icon-map"></use></svg>
                                 <span>Güzergahlar</span>
+                            </a>
+                            <a class="nav-link nav-level-2 @(IsActive("Bolge") ? "active" : "")" asp-controller="Bolge" asp-action="Index">
+                                <svg><use href="#icon-map"></use></svg>
+                                <span>Bölgeler</span>
                             </a>
                             <a class="nav-link nav-level-2 @(IsActive("BankaHesabi") ? "active" : "")" asp-controller="BankaHesabi" asp-action="Index">
                                 <svg><use href="#icon-bank"></use></svg>
@@ -263,6 +263,12 @@
             <main class="content">
                 @RenderBody()
             </main>
+
+            <footer class="app-footer">
+                <span>&copy; @DateTime.Now.Year Cevahir Turizm</span>
+                <span class="app-footer-sep">&bull;</span>
+                <span>CService Portal</span>
+            </footer>
         </div>
     </div>
 

@@ -9,7 +9,7 @@
 		<RootNamespace>CService.Desktop</RootNamespace>
 		<!--<ApplicationIcon>..\CService.Web\wwwroot\assets\images\logo\ApplicationIcon.ico</ApplicationIcon>-->
 	</PropertyGroup>
-
+	
 	<!-- Web uygulamasını bu süreç içinde (in-process) host edebilmek için ASP.NET Core. -->
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />

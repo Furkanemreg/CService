@@ -143,6 +143,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(a => a.AracSahibiId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Entity<Arac>().HasOne(a => a.Hostes).WithMany().HasForeignKey(a => a.HostesId).OnDelete(DeleteBehavior.Restrict);
         builder.Entity<Arac>().HasOne(a => a.AracCinsi).WithMany().HasForeignKey(a => a.AracCinsiId).OnDelete(DeleteBehavior.Restrict);
         builder.Entity<Arac>().HasOne(a => a.AracMarka).WithMany().HasForeignKey(a => a.AracMarkaId).OnDelete(DeleteBehavior.Restrict);
         builder.Entity<Arac>().HasOne(a => a.AracTipi).WithMany().HasForeignKey(a => a.AracTipiId).OnDelete(DeleteBehavior.Restrict);

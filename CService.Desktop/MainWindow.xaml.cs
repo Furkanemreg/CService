@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace CService.Desktop;
 
@@ -10,6 +12,13 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _startUrl = startUrl;
+
+        var iconPath = Path.Combine(AppContext.BaseDirectory, "wwwroot", "img", "logoIcon.png");
+        if (File.Exists(iconPath))
+        {
+            Icon = new BitmapImage(new Uri(iconPath));
+        }
+
         Loaded += async (_, _) =>
         {
             await webView.EnsureCoreWebView2Async();

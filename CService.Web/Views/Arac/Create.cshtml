@@ -17,6 +17,13 @@
         SearchUrl = Url.Action("SearchAracSahibi", "Shared"),
         Placeholder = "Araç sahibi ara (ad veya kod)..."
     };
+
+    var hostesSearch = new SearchSelectViewModel
+    {
+        HiddenName = nameof(Model.HostesId),
+        SearchUrl = Url.Action("SearchHostes", "Shared"),
+        Placeholder = "Hostes ara (ad veya kod)..."
+    };
 }
 
 <h2 class="mb-4">Yeni Araç</h2>
@@ -183,17 +190,9 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4 mb-3">
-            <label asp-for="HostesAdi" class="form-label">Hostes Adı</label>
-            <input asp-for="HostesAdi" class="form-control" />
-        </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="HostesKimlikNo" class="form-label">Hostes Kimlik No</label>
-            <input asp-for="HostesKimlikNo" class="form-control" />
-        </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="HostesTelefon" class="form-label">Hostes Telefon</label>
-            <input asp-for="HostesTelefon" class="form-control" />
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Hostes</label>
+            <partial name="_SearchSelect" model="hostesSearch" />
         </div>
     </div>
 

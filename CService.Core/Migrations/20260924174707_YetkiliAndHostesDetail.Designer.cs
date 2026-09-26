@@ -3,6 +3,7 @@ using System;
 using CService.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CService.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260924174707_YetkiliAndHostesDetail")]
+    partial class YetkiliAndHostesDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,8 +177,14 @@ namespace CService.Core.Migrations
                     b.Property<int>("FirmaId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("HostesId")
-                        .HasColumnType("integer");
+                    b.Property<string>("HostesAdi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HostesKimlikNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HostesTelefon")
+                        .HasColumnType("text");
 
                     b.Property<DateOnly?>("IlkGirisTarihi")
                         .HasColumnType("date");
@@ -243,8 +252,6 @@ namespace CService.Core.Migrations
                     b.HasIndex("AracTipiId");
 
                     b.HasIndex("FirmaId");
-
-                    b.HasIndex("HostesId");
 
                     b.ToTable("Araclar");
                 });
@@ -1434,11 +1441,6 @@ namespace CService.Core.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CService.Core.Entities.Hostes", "Hostes")
-                        .WithMany()
-                        .HasForeignKey("HostesId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("AracCinsi");
 
                     b.Navigation("AracMarka");
@@ -1448,8 +1450,6 @@ namespace CService.Core.Migrations
                     b.Navigation("AracTipi");
 
                     b.Navigation("Firma");
-
-                    b.Navigation("Hostes");
                 });
 
             modelBuilder.Entity("CService.Core.Entities.AracSahibi", b =>

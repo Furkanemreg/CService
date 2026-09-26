@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace CService.Web.Controllers;
 
@@ -20,6 +21,7 @@ public class AracController : Controller
     private readonly IBaseService<AracCinsi> _cinsiService;
     private readonly IBaseService<AracMarka> _markaService;
     private readonly IBaseService<AracTipi> _tipiService;
+    private readonly IBaseService<Hostes> _hostesService;
 
     public AracController(
         IBaseService<Arac> service,
@@ -27,7 +29,8 @@ public class AracController : Controller
         IBaseService<Firma> firmaService,
         IBaseService<AracCinsi> cinsiService,
         IBaseService<AracMarka> markaService,
-        IBaseService<AracTipi> tipiService)
+        IBaseService<AracTipi> tipiService,
+        IBaseService<Hostes> hostesService)
     {
         _service = service;
         _aracSahibiService = aracSahibiService;
@@ -35,6 +38,7 @@ public class AracController : Controller
         _cinsiService = cinsiService;
         _markaService = markaService;
         _tipiService = tipiService;
+        _hostesService = hostesService;
     }
 
     private async Task PopulateDropdownsAsync()
@@ -46,7 +50,7 @@ public class AracController : Controller
         ViewBag.Tipler = new SelectList(await _tipiService.GetAllAsync(), nameof(AracTipi.Id), nameof(AracTipi.Ad));
     }
 
-    private async Task PopulateSelectedDisplaysAsync(int? firmaId, int? aracSahibiId)
+    private async Task PopulateSelectedDisplaysAsync(int? firmaId, int? aracSahibiId, int? hostesId = null)
     {
         if (firmaId is int fid)
         {
@@ -58,6 +62,12 @@ public class AracController : Controller
         {
             var sahip = await _aracSahibiService.GetByIdAsync(said);
             ViewBag.AracSahibiDisplay = sahip is null ? null : $"{sahip.Kod} - {sahip.Adi} {sahip.Soyad}";
+        }
+
+        if (hostesId is int hid)
+        {
+            var hostes = await _hostesService.GetByIdAsync(hid);
+            ViewBag.HostesDisplay = hostes is null ? null : $"{hostes.Kod} - {hostes.AdSoyad}";
         }
     }
 
@@ -139,9 +149,7 @@ public class AracController : Controller
             SoforAdi = model.SoforAdi,
             SoforKimlikNo = model.SoforKimlikNo,
             SoforTelefon = model.SoforTelefon,
-            HostesAdi = model.HostesAdi,
-            HostesKimlikNo = model.HostesKimlikNo,
-            HostesTelefon = model.HostesTelefon
+            HostesId = model.HostesId
         };
 
         await _service.CreateAsync(arac);
@@ -194,9 +202,7 @@ public class AracController : Controller
         existing.SoforAdi = model.SoforAdi;
         existing.SoforKimlikNo = model.SoforKimlikNo;
         existing.SoforTelefon = model.SoforTelefon;
-        existing.HostesAdi = model.HostesAdi;
-        existing.HostesKimlikNo = model.HostesKimlikNo;
-        existing.HostesTelefon = model.HostesTelefon;
+        existing.HostesId = model.HostesId;
 
         await _service.UpdateAsync(existing);
         return RedirectToAction(nameof(Index));

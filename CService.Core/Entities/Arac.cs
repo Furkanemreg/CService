@@ -36,9 +36,8 @@ public class Arac : BaseEntity
     public string? SoforKimlikNo { get; set; }
     public string? SoforTelefon { get; set; }
 
-    public string? HostesAdi { get; set; }
-    public string? HostesKimlikNo { get; set; }
-    public string? HostesTelefon { get; set; }
+    public int? HostesId { get; set; }
+    public Hostes? Hostes { get; set; }
 
     public int FirmaId { get; set; }
     public Firma? Firma { get; set; }

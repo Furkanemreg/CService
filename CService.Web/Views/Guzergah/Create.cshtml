@@ -37,11 +37,6 @@
 <form asp-action="Create" method="post" class="col-md-7">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="mb-3">
-        <label class="form-label">Firma *</label>
-        <partial name="_SearchSelect" model="firmaSearch" />
-    </div>
-
     <div class="row">
         <div class="col-md-4 mb-3">
             <label asp-for="Kod" class="form-label">Kod *</label>
@@ -53,10 +48,15 @@
             <input asp-for="Kod2" class="form-control" />
         </div>
         <div class="col-md-4 mb-3">
-            <label asp-for="Ad" class="form-label">Güzergah *</label>
+            <label asp-for="Ad" class="form-label">Güzergah Adı *</label>
             <input asp-for="Ad" class="form-control" required />
             <span asp-validation-for="Ad" class="text-danger"></span>
         </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Firma *</label>
+        <partial name="_SearchSelect" model="firmaSearch" />
     </div>
 
     <div class="mb-3">
@@ -67,6 +67,11 @@
     <div class="mb-3">
         <label class="form-label">Yetkili</label>
         <partial name="_SearchSelect" model="yetkiliSearch" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Hostes</label>
+        <partial name="_SearchSelect" model="hostesSearch" />
     </div>
 
     <div class="row">
@@ -96,11 +101,6 @@
     <div class="mb-3">
         <label asp-for="Aciklama" class="form-label">Açıklama</label>
         <input asp-for="Aciklama" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Hostes</label>
-        <partial name="_SearchSelect" model="hostesSearch" />
     </div>
 
     <div class="row">
